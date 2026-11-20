@@ -1,0 +1,102 @@
+import type { Metadata } from "next";
+import { Container, Eyebrow, Icon } from "@/components/ui";
+import { company } from "@/config/company";
+import { PageHero } from "@/components/PageHero";
+import { Reveal } from "@/components/Reveal";
+import { CtaBand } from "@/components/CtaBand";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
+
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return { title: getDictionary(locale as Locale).nav.about };
+}
+
+export default async function AboutPage({ params }: Props) {
+  const { locale: l } = await params;
+  const locale = l as Locale;
+  const t = getDictionary(locale);
+  const a = t.about;
+
+  return (
+    <>
+      <PageHero eyebrow={a.eyebrow} title={a.title} subtitle={a.intro} />
+
+      <section className="py-24 sm:py-32">
+        <Container className="grid gap-4 md:grid-cols-2">
+          {[
+            { label: a.missionTitle, body: a.mission },
+            { label: a.visionTitle, body: a.vision },
+          ].map((b, i) => (
+            <Reveal key={b.label} delay={i * 100} className="card-surface rounded-3xl p-8 sm:p-12">
+              <Eyebrow>{b.label}</Eyebrow>
+              <p className="mt-8 text-balance text-2xl font-medium leading-snug tracking-tight sm:text-3xl">{b.body}</p>
+            </Reveal>
+          ))}
+        </Container>
+      </section>
+
+      <section className="pb-24 sm:pb-32">
+        <Container>
+          <Reveal className="flex flex-col gap-6 rounded-3xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:p-12">
+            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-accent">
+              <Icon name="shield" className="h-8 w-8" />
+            </span>
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight">{a.licenseTitle}</h2>
+              <p className="mt-2 max-w-2xl leading-relaxed text-white/70">{a.licenseText}</p>
+              {company.tradeLicenseNo && (
+                <p className="mt-4 font-mono text-[13px] text-white/80">
+                  {t.footer.licenseNo} {company.tradeLicenseNo}
+                  {company.tradeLicenseIssuer && ` · ${company.tradeLicenseIssuer}`}
+                </p>
+              )}
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      <section className="border-y border-line bg-surface py-24 sm:py-32">
+        <Container>
+          <Reveal>
+            <h2 className="text-gradient text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">{a.valuesTitle}</h2>
+          </Reveal>
+          <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+            {a.values.map((v, i) => (
+              <Reveal key={v.title} delay={i * 80} className="bg-canvas p-7 sm:p-8">
+                <span className="font-mono text-[12px] text-signal">0{i + 1}</span>
+                <h3 className="mt-10 text-xl font-semibold tracking-tight">{v.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{v.description}</p>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-24 sm:py-32">
+        <Container>
+          <Reveal>
+            <Eyebrow>{t.pillarsIntro.eyebrow}</Eyebrow>
+          </Reveal>
+          <div className="mt-8 divide-y divide-line border-y border-line">
+            {t.pillars.map((p, i) => (
+              <Reveal
+                key={p.id}
+                delay={i * 80}
+                className="grid gap-3 py-8 sm:grid-cols-[80px_1fr_1.4fr] sm:items-baseline sm:gap-8"
+              >
+                <span className="font-mono text-[13px] text-fg-subtle">{p.label}</span>
+                <h3 className="text-2xl font-semibold tracking-tight">{p.title}</h3>
+                <p className="leading-relaxed text-fg-muted">{p.description}</p>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <CtaBand locale={locale} t={t.cta} />
+    </>
+  );
+}

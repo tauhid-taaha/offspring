@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Brand tokens ───────────────────────── */
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-bangla: var(--font-bangla), var(--font-geist), sans-serif;
+
+  /* Surfaces (light, like Apple / Stripe) */
+  --color-canvas: #ffffff;
+  --color-surface: #f6f7f9;
+  --color-surface-2: #eef1f5;
+  --color-ink: #0a0d14; /* deep ink used for dark feature bands */
+
+  /* Text */
+  --color-fg: #0a0d14;
+  --color-fg-muted: #525a6b;
+  --color-fg-subtle: #858c9b;
+
+  /* Brand accent — "signal blue" to "pulse teal" */
+  --color-signal: #2f52f5;
+  --color-signal-soft: #e9edff;
+  --color-pulse: #0ba89b;
+  /* Warm action colour for primary CTAs */
+  --color-accent: #ffb21e;
+  --color-accent-strong: #f59e0b;
+  --color-navy: #0b1b3f;
+
+  --color-line: rgb(10 13 20 / 0.08);
+  --color-line-strong: rgb(10 13 20 / 0.14);
+
+  --animate-dash: dash 6s linear infinite;
+  --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 40s linear infinite;
+
+  @keyframes dash {
+    to { stroke-dashoffset: -200; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+html {
+  background: var(--color-canvas);
+  color: var(--color-fg);
+  color-scheme: light;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  background: var(--color-canvas);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+html[lang="bn"] body { font-family: var(--font-bangla); }
+
+::selection { background: rgb(47 82 245 / 0.18); color: var(--color-fg); }
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ───────────────────────── Utilities ───────────────────────── */
+@utility text-gradient {
+  background: linear-gradient(180deg, #0a0d14 30%, #4b5366 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility text-signal-gradient {
+  background: linear-gradient(90deg, var(--color-signal), var(--color-pulse));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(10 13 20 / 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(10 13 20 / 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+@utility card-surface {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1px 2px rgb(10 13 20 / 0.04), 0 8px 24px -12px rgb(10 13 20 / 0.08);
+}
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* Above-the-fold entrance: pure CSS so the hero never depends on JS */
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fade-up .9s cubic-bezier(.2,.7,.2,1) both; }
+
+/* White text gradient for headings inside dark bands */
+@utility text-gradient-light {
+  background: linear-gradient(180deg, #ffffff 30%, #aab2c5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
