@@ -1,42 +1,51 @@
-import { useId } from "react";
+import Image from "next/image";
 import clsx from "clsx";
 
 /**
- * Offspring symbol — CONCEPT, not the final logo.
- * A parent ring ("O") emitting a child node: growth + connection.
- * The connector and stem together read as a "T".
+ * Offspring logo mark — from public/images/logo/logo.png.
+ * The site uses logo-mark.png: the same artwork with the white background
+ * removed and trimmed square. To change the logo, replace logo.png and
+ * regenerate logo-mark.png (see public/images/README.md).
  */
-export function LogoMark({ className, size = 32 }: { className?: string; size?: number }) {
-  const id = useId();
-  return (
-    <svg
+const LOGO_SRC = "/images/logo/logo-mark.png";
+
+export function LogoMark({
+  className,
+  size = 32,
+  tile = false,
+}: {
+  className?: string;
+  size?: number;
+  /** Put the mark on a white rounded tile — use on dark backgrounds. */
+  tile?: boolean;
+}) {
+  const img = (
+    <Image
+      src={LOGO_SRC}
+      alt=""
       width={size}
       height={size}
-      viewBox="0 0 32 32"
-      fill="none"
-      className={className}
+      className={clsx("shrink-0 select-none", !tile && className)}
+      priority
       aria-hidden="true"
+    />
+  );
+  if (!tile) return img;
+  const pad = Math.round(size * 0.22);
+  return (
+    <span
+      className={clsx("inline-flex items-center justify-center rounded-2xl bg-white shadow-lg", className)}
+      style={{ padding: pad }}
     >
-      <defs>
-        <linearGradient id={`${id}-g`} x1="4" y1="28" x2="28" y2="4" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#2F52F5" />
-          <stop offset="1" stopColor="#0BA89B" />
-        </linearGradient>
-      </defs>
-      {/* Parent ring */}
-      <circle cx="13" cy="19" r="8.25" stroke="currentColor" strokeWidth="3.5" />
-      {/* Connector (T crossbar + stem) */}
-      <path d="M19 13 L23.5 8.5" stroke={`url(#${id}-g)`} strokeWidth="3.5" strokeLinecap="round" />
-      {/* Offspring node */}
-      <circle cx="25.5" cy="6.5" r="4" fill={`url(#${id}-g)`} />
-    </svg>
+      {img}
+    </span>
   );
 }
 
 export function Logo({ className, compact = false }: { className?: string; compact?: boolean }) {
   return (
     <span className={clsx("inline-flex items-center gap-2.5 text-fg", className)}>
-      <LogoMark />
+      <LogoMark size={36} />
       {!compact && (
         <span className="flex flex-col leading-none">
           <span className="text-[15px] font-semibold tracking-[0.14em]">OFFSPRING</span>

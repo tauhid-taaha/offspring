@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import clsx from "clsx";
 import { Arrow, ButtonLink, Container, Eyebrow, Icon, SectionHeading } from "@/components/ui";
-import { Backdrop, ImageSlot } from "@/components/Media";
+import { Backdrop, ImageSlot, SectionBg } from "@/components/Media";
 import { Reveal } from "@/components/Reveal";
 import { CtaBand } from "@/components/CtaBand";
 import { href, type Locale } from "@/i18n/config";
@@ -40,7 +40,7 @@ export default async function DivisionPage({ params }: Props) {
 
   // Drop-in images: public/images/divisions/<division>/{hero,banner,<item-id>}.(webp|jpg|png)
   const imgDir = `divisions/${division}`;
-  const heroImg = findImage(imgDir, "hero");
+  const heroImg = findImage(imgDir, "cover");
   const bannerImg = findImage(imgDir, "banner");
   const onPhoto = Boolean(heroImg);
   const isCatalog = d.offer.layout === "catalog";
@@ -139,7 +139,8 @@ export default async function DivisionPage({ params }: Props) {
       </section>
 
       {/* ───────── What we offer / supply ───────── */}
-      <section id="offer" className="scroll-mt-16 py-24 sm:py-32">
+      <section id="offer" className="relative isolate scroll-mt-16 py-24 sm:py-32">
+        <SectionBg slot={`${imgDir}/bg-offer`} />
         <Container>
           <Reveal>
             <SectionHeading eyebrow={d.offer.eyebrow} title={d.offer.title} subtitle={d.offer.subtitle} />
@@ -225,7 +226,8 @@ export default async function DivisionPage({ params }: Props) {
 
       {/* ───────── Tech stack (digital only) ───────── */}
       {d.stack && (
-        <section className="py-24 sm:py-32">
+        <section className="relative isolate py-24 sm:py-32">
+          <SectionBg slot={`${imgDir}/bg-stack`} />
           <Container>
             <Reveal>
               <SectionHeading eyebrow={d.stack.eyebrow} title={d.stack.title} />
@@ -249,7 +251,8 @@ export default async function DivisionPage({ params }: Props) {
       )}
 
       {/* ───────── Process ───────── */}
-      <section className={clsx("py-24 sm:py-32", d.stack && "border-t border-line bg-surface")}>
+      <section className={clsx("relative isolate py-24 sm:py-32", d.stack && "border-t border-line bg-surface")}>
+        <SectionBg slot={`${imgDir}/bg-process`} />
         <Container>
           <Reveal>
             <SectionHeading eyebrow={d.process.eyebrow} title={d.process.title} />
@@ -270,7 +273,8 @@ export default async function DivisionPage({ params }: Props) {
       </section>
 
       {/* ───────── Engagement / assurance / contract models ───────── */}
-      <section className={clsx("py-24 sm:py-32", d.stack ? "" : "border-t border-line bg-surface")}>
+      <section className={clsx("relative isolate py-24 sm:py-32", d.stack ? "" : "border-t border-line bg-surface")}>
+        <SectionBg slot={`${imgDir}/bg-extras`} />
         <Container className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
           <Reveal>
             <SectionHeading eyebrow={d.extras.eyebrow} title={d.extras.title} />
@@ -290,7 +294,8 @@ export default async function DivisionPage({ params }: Props) {
       </section>
 
       {/* ───────── Other divisions ───────── */}
-      <section className="py-24 sm:py-28">
+      <section className="relative isolate py-24 sm:py-28">
+        <SectionBg slot={`${imgDir}/bg-others`} />
         <Container>
           <Reveal>
             <Eyebrow>{ui.otherDivisions}</Eyebrow>

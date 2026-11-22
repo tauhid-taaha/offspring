@@ -34,8 +34,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: { default: t.title, template: "%s — Offspring Technologies" },
     description: t.description,
-    icons: { icon: "/icon.svg" },
-    openGraph: { title: t.title, description: t.description, type: "website", siteName: "Offspring Technologies" },
+    // Favicon: src/app/icon.png and src/app/apple-icon.png (generated from public/images/logo/logo.png)
+    openGraph: {
+      title: t.title,
+      description: t.description,
+      type: "website",
+      siteName: "Offspring Technologies",
+      images: [{ url: "/images/logo/logo-mark.png", width: 512, height: 512, alt: "Offspring Technologies" }],
+    },
     alternates: {
       languages: Object.fromEntries(enabledLocales.map((l) => [l, `/${l}`])),
     },

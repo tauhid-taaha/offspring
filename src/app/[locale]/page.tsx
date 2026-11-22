@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { ButtonLink, Container, Icon, SectionHeading, Arrow } from "@/components/ui";
-import { HeroVisual } from "@/components/HeroVisual";
+import { HeroSlider } from "@/components/HeroSlider";
 import { DivisionTabs } from "@/components/DivisionTabs";
 import { Faq } from "@/components/Faq";
 import { Reveal } from "@/components/Reveal";
 import { CtaBand } from "@/components/CtaBand";
 import { href, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { findImage } from "@/lib/images";
+import { findSlot } from "@/lib/images";
+import { Backdrop, SectionBg } from "@/components/Media";
+import clsx from "clsx";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: l } = await params;
@@ -24,20 +26,37 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     description: p.description,
     points: p.points,
     href: href(locale, `/solutions/${p.id}`),
-    image: findImage("home", p.id),
+    image: findSlot(`home/tab-${p.id}`),
   }));
 
   const words = t.hero.title.split(" ");
+  const cover = findSlot("home/cover");
+  const slides = t.heroSlides.items.map((sl) => ({
+    id: sl.id,
+    icon: sl.icon,
+    tag: sl.tag,
+    caption: sl.caption,
+    icons: sl.icons,
+    stats: sl.stats,
+    href: href(locale, `/solutions/${sl.division}`),
+    images: [findSlot(`home/slide-${sl.id}-1`), findSlot(`home/slide-${sl.id}-2`)],
+  }));
 
   return (
     <>
       {/* ───────── Split hero ───────── */}
-      <section className="relative overflow-hidden pb-28 pt-28 sm:pb-36 sm:pt-32">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#f3f6ff_0%,#ffffff_85%)]" />
-        <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_70%_30%,#000_30%,transparent_100%)]" />
-        <div className="absolute -right-40 top-10 h-[640px] w-[640px] rounded-full bg-[radial-gradient(closest-side,rgb(47_82_245/0.14),transparent)]" />
+      <section className={clsx("relative isolate overflow-hidden pb-28 pt-28 sm:pb-36 sm:pt-32", cover && "text-white")}>
+        {cover ? (
+          <Backdrop src={cover} tone="light" priority />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,#f1f8f4_0%,#ffffff_90%)]" />
+            {/* concentric rings behind the photos */}
+            <div className="absolute inset-0 bg-[repeating-radial-gradient(circle_at_78%_45%,transparent_0,transparent_26px,rgb(0_119_95/0.06)_27px,transparent_28px)] [mask-image:radial-gradient(circle_at_78%_45%,#000_10%,transparent_65%)]" />
+          </>
+        )}
 
-        <Container className="relative grid items-center gap-14 lg:grid-cols-[1.1fr_1fr] lg:gap-8">
+        <Container className="relative grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           <div>
             <div className="fade-up inline-flex max-w-full items-center gap-2 rounded-full border border-line-strong bg-canvas py-1 pl-1 pr-4 shadow-sm">
               <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-pulse/10 px-2.5 py-1 text-[12px] font-semibold text-pulse">
@@ -47,14 +66,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <span className="truncate text-[13px] text-fg-muted">{t.hero.eyebrow}</span>
             </div>
             <h1
-              className="fade-up mt-7 text-balance text-[42px] font-semibold leading-[1.04] tracking-[-0.045em] text-fg sm:text-6xl lg:text-[72px]"
+              className={clsx("fade-up mt-7 text-balance text-[42px] font-semibold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[64px]", cover ? "text-white" : "text-fg")}
               style={{ animationDelay: "80ms" }}
             >
               {words.slice(0, -2).join(" ")}{" "}
               <span className="text-signal-gradient">{words.slice(-2).join(" ")}</span>
             </h1>
             <p
-              className="fade-up mt-6 max-w-xl text-pretty text-lg leading-relaxed text-fg-muted sm:text-xl"
+              className={clsx("fade-up mt-6 max-w-xl text-pretty text-lg leading-relaxed sm:text-xl", cover ? "text-white/80" : "text-fg-muted")}
               style={{ animationDelay: "160ms" }}
             >
               {t.hero.subtitle}
@@ -63,14 +82,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <ButtonLink href={href(locale, "/contact")} className="h-12 px-6">
                 {t.hero.primary}
               </ButtonLink>
-              <ButtonLink href={href(locale, "/solutions")} variant="secondary" className="h-12 px-6">
+              <ButtonLink href={href(locale, "/solutions")} variant={cover ? "onDarkSecondary" : "secondary"} className="h-12 px-6">
                 {t.hero.secondary}
               </ButtonLink>
             </div>
           </div>
 
-          <div className="fade-up px-6 sm:px-10 lg:px-0" style={{ animationDelay: "200ms" }}>
-            <HeroVisual image={findImage("home", "hero")} />
+          <div
+            className={clsx("fade-up", cover && "rounded-3xl bg-canvas/90 p-5 text-fg shadow-xl backdrop-blur sm:p-6")}
+            style={{ animationDelay: "200ms" }}
+          >
+            <HeroSlider slides={slides} labels={t.heroSlides} />
           </div>
         </Container>
       </section>
@@ -101,7 +123,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </Container>
 
       {/* ───────── Divisions (tabbed) ───────── */}
-      <section className="py-24 sm:py-32">
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="home/bg-divisions" />
         <Container>
           <Reveal>
             <SectionHeading eyebrow={t.pillarsIntro.eyebrow} title={t.pillarsIntro.title} subtitle={t.pillarsIntro.subtitle} />
@@ -113,7 +136,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ───────── Popular solutions ───────── */}
-      <section className="border-y border-line bg-surface py-24 sm:py-32">
+      <section className="relative isolate border-y border-line bg-surface py-24 sm:py-32">
+        <SectionBg slot="home/bg-solutions" />
         <Container>
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <Reveal>
@@ -132,8 +156,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {t.products.items.map((p, i) => (
               <Reveal key={p.title} delay={i * 80}>
-                <article className="card-surface group flex h-full flex-col rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-24px_rgb(47_82_245/0.35)]">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-signal text-white shadow-[0_10px_24px_-10px_rgb(47_82_245/0.8)]">
+                <article className="card-surface group flex h-full flex-col rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-24px_rgb(0_119_95/0.35)]">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-signal text-white shadow-[0_10px_24px_-10px_rgb(0_119_95/0.8)]">
                     <Icon name={p.icon} className="h-6 w-6" />
                   </span>
                   <h3 className="mt-7 text-xl font-semibold tracking-tight">{p.title}</h3>
@@ -153,55 +177,67 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ───────── Where we work ───────── */}
-      <section className="py-24 sm:py-32">
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="home/bg-reach" />
         <Container>
           <Reveal>
             <SectionHeading eyebrow={t.reach.eyebrow} title={t.reach.title} align="center" />
           </Reveal>
-          <div className="mt-14 grid gap-5 lg:grid-cols-2">
-            {[
-              { ...t.reach.world, icon: "globe", dark: true },
-              { ...t.reach.local, icon: "pin", dark: false },
-            ].map((c, i) => (
-              <Reveal key={c.title} delay={i * 100}>
-                <div
-                  className={`relative h-full overflow-hidden rounded-[32px] p-8 sm:p-12 ${
-                    c.dark ? "bg-navy text-white" : "bg-signal-soft text-fg"
-                  }`}
-                >
-                  <Icon
-                    name={c.icon}
-                    className={`absolute -right-10 -top-10 h-64 w-64 ${c.dark ? "text-white/[0.06]" : "text-signal/[0.08]"}`}
-                  />
-                  <span
-                    className={`relative inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${
-                      c.dark ? "bg-white/10 text-white" : "bg-canvas text-signal"
-                    }`}
+          <div className="mt-14 grid gap-5 lg:grid-cols-3">
+            {t.reach.items.map((c, i) => {
+              // three tones: navy · mint · white
+              const tone = (["dark", "mint", "white"] as const)[i % 3];
+              const dark = tone === "dark";
+              return (
+                <Reveal key={c.id} delay={i * 100}>
+                  <div
+                    className={clsx(
+                      "relative isolate flex h-full flex-col overflow-hidden rounded-[28px] p-8 sm:p-10",
+                      tone === "dark" && "bg-navy text-white",
+                      tone === "mint" && "bg-signal-soft text-fg",
+                      tone === "white" && "bg-canvas text-fg ring-1 ring-line",
+                    )}
                   >
-                    <Icon name={c.icon} className="h-3.5 w-3.5" />
-                    {c.tag}
-                  </span>
-                  <h3 className="relative mt-6 text-3xl font-semibold tracking-[-0.03em]">{c.title}</h3>
-                  <p className={`relative mt-4 max-w-md text-lg leading-relaxed ${c.dark ? "text-white/70" : "text-fg-muted"}`}>
-                    {c.text}
-                  </p>
-                  <ul className="relative mt-8 space-y-3">
-                    {c.points.map((pt) => (
-                      <li key={pt} className="flex items-center gap-3 text-[15px]">
-                        <Icon name="check" className={`h-4 w-4 ${c.dark ? "text-accent" : "text-pulse"}`} />
-                        {pt}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
+                    <SectionBg slot={`home/card-${c.id}`} tone={dark ? "dark" : "light"} />
+                    <Icon
+                      name={c.icon}
+                      className={clsx("absolute -right-8 -top-8 h-48 w-48", dark ? "text-white/[0.06]" : "text-signal/[0.07]")}
+                    />
+                    <div className="relative flex items-center justify-between">
+                      <span
+                        className={clsx(
+                          "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold",
+                          dark ? "bg-white/10 text-white" : tone === "mint" ? "bg-canvas text-signal" : "bg-signal-soft text-signal",
+                        )}
+                      >
+                        <Icon name={i === 0 ? "globe" : "pin"} className="h-3.5 w-3.5" />
+                        {c.tag}
+                      </span>
+                      <span className={clsx("font-mono text-[13px]", dark ? "text-white/50" : "text-fg-subtle")}>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] sm:text-[28px]">{c.title}</h3>
+                    <p className={clsx("relative mt-4 leading-relaxed", dark ? "text-white/70" : "text-fg-muted")}>{c.text}</p>
+                    <ul className="relative mt-auto space-y-3 pt-8">
+                      {c.points.map((pt) => (
+                        <li key={pt} className="flex items-start gap-3 text-[15px]">
+                          <Icon name="check" className={clsx("mt-0.5 h-4 w-4 shrink-0", dark ? "text-accent" : "text-pulse")} />
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </Container>
       </section>
 
       {/* ───────── Who we serve (navy band) ───────── */}
-      <section id="industries" className="scroll-mt-16 bg-navy py-24 text-white sm:py-32">
+      <section id="industries" className="relative isolate scroll-mt-16 bg-navy py-24 text-white sm:py-32">
+        <SectionBg slot="home/bg-industries" tone="dark" />
         <Container>
           <Reveal>
             <div className="max-w-2xl">
@@ -232,7 +268,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ───────── Why choose us ───────── */}
-      <section className="py-24 sm:py-32">
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="home/bg-why" />
         <Container className="grid gap-14 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
           <Reveal>
             <SectionHeading eyebrow={t.principles.eyebrow} title={t.principles.title} />
@@ -252,7 +289,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ───────── Process ───────── */}
-      <section className="border-y border-line bg-surface py-24 sm:py-32">
+      <section className="relative isolate border-y border-line bg-surface py-24 sm:py-32">
+        <SectionBg slot="home/bg-process" />
         <Container>
           <Reveal>
             <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} />
@@ -273,7 +311,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ───────── FAQ ───────── */}
-      <section className="py-24 sm:py-32">
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="home/bg-faq" />
         <Container className="grid gap-12 lg:grid-cols-[1fr_1.8fr] lg:gap-20">
           <Reveal>
             <SectionHeading eyebrow={t.faq.eyebrow} title={t.faq.title} />

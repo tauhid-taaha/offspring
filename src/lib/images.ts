@@ -18,3 +18,9 @@ export function findImage(dir: string, name: string): string | null {
   }
   return null;
 }
+
+/** Same as findImage, but takes one path like "home/cover" or "divisions/digital/bg-offer". */
+export function findSlot(slot: string): string | null {
+  const i = slot.lastIndexOf("/");
+  return findImage(slot.slice(0, i), slot.slice(i + 1));
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import clsx from "clsx";
 import { ButtonLink, Container, Eyebrow, Icon } from "@/components/ui";
 import { PageHero } from "@/components/PageHero";
+import { SectionBg } from "@/components/Media";
 import { Reveal } from "@/components/Reveal";
 import { CtaBand } from "@/components/CtaBand";
 import { href, type Locale } from "@/i18n/config";
@@ -22,7 +23,7 @@ export default async function SolutionsPage({ params }: Props) {
 
   return (
     <>
-      <PageHero eyebrow={s.eyebrow} title={s.title} subtitle={s.subtitle} />
+      <PageHero eyebrow={s.eyebrow} title={s.title} subtitle={s.subtitle} cover="solutions/cover" />
 
       {/* Sticky in-page nav */}
       <div className="sticky top-16 z-40 border-b border-line bg-canvas/80 backdrop-blur-xl">
@@ -44,8 +45,9 @@ export default async function SolutionsPage({ params }: Props) {
         <section
           key={p.id}
           id={p.id}
-          className={clsx("scroll-mt-32 py-24 sm:py-32", i % 2 === 1 && "border-y border-line bg-surface")}
+          className={clsx("relative isolate scroll-mt-32 py-24 sm:py-32", i % 2 === 1 && "border-y border-line bg-surface")}
         >
+          <SectionBg slot={`solutions/bg-${p.id}`} />
           <Container className="grid gap-12 lg:grid-cols-2 lg:gap-20">
             <Reveal>
               <div className="flex items-center gap-4">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Container, Eyebrow, Icon } from "@/components/ui";
 import { company } from "@/config/company";
 import { PageHero } from "@/components/PageHero";
+import { SectionBg } from "@/components/Media";
 import { Reveal } from "@/components/Reveal";
 import { CtaBand } from "@/components/CtaBand";
 import type { Locale } from "@/i18n/config";
@@ -22,9 +23,10 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <>
-      <PageHero eyebrow={a.eyebrow} title={a.title} subtitle={a.intro} />
+      <PageHero eyebrow={a.eyebrow} title={a.title} subtitle={a.intro} cover="about/cover" />
 
-      <section className="py-24 sm:py-32">
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="about/bg-mission" />
         <Container className="grid gap-4 md:grid-cols-2">
           {[
             { label: a.missionTitle, body: a.mission },
@@ -38,7 +40,8 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="pb-24 sm:pb-32">
+      <section className="relative isolate pb-24 sm:pb-32">
+        <SectionBg slot="about/bg-license" />
         <Container>
           <Reveal className="flex flex-col gap-6 rounded-3xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:p-12">
             <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-accent">
@@ -58,7 +61,8 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="border-y border-line bg-surface py-24 sm:py-32">
+      <section className="relative isolate border-y border-line bg-surface py-24 sm:py-32">
+        <SectionBg slot="about/bg-values" />
         <Container>
           <Reveal>
             <h2 className="text-gradient text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">{a.valuesTitle}</h2>
@@ -75,7 +79,8 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="py-24 sm:py-32">
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="about/bg-divisions" />
         <Container>
           <Reveal>
             <Eyebrow>{t.pillarsIntro.eyebrow}</Eyebrow>

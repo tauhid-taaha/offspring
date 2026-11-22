@@ -14,7 +14,7 @@ export function Eyebrow({ children, className }: { children: ReactNode; classNam
         className,
       )}
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-pulse shadow-[0_0_12px_2px_rgb(46_230_214/0.6)]" />
+      <span className="h-1.5 w-1.5 rounded-full bg-pulse shadow-[0_0_12px_2px_rgb(31_168_90/0.6)]" />
       {children}
     </p>
   );

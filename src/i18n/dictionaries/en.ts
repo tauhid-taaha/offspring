@@ -33,6 +33,50 @@ const en = {
     primary: "Get a free quote",
     secondary: "Explore solutions",
   },
+  /** Hero slider (right side). Photos: public/images/home/slide-<id>-1.jpg and slide-<id>-2.jpg */
+  heroSlides: {
+    prev: "Previous",
+    next: "Next",
+    explore: "Explore",
+    items: [
+      {
+        id: "software",
+        division: "digital",
+        icon: "code",
+        tag: "Software & IT",
+        caption: "School & college systems, ERPs, websites and apps.",
+        icons: ["school", "phone"],
+        stats: [
+          { value: "Worldwide", label: "Software delivery" },
+          { value: "Your code", label: "Handed over to you" },
+        ],
+      },
+      {
+        id: "supply",
+        division: "equipment",
+        icon: "box",
+        tag: "Electronics & Equipment Supply",
+        caption: "Electronics, IT, power, lab and medical equipment.",
+        icons: ["server", "bolt"],
+        stats: [
+          { value: "BDT quotes", label: "Genuine products" },
+          { value: "Bangladesh", label: "Delivered to your site" },
+        ],
+      },
+      {
+        id: "install",
+        division: "engineering",
+        icon: "wrench",
+        tag: "Machines & Civil Works",
+        caption: "Machine installation, electrical and civil works.",
+        icons: ["gear", "building"],
+        stats: [
+          { value: "On-site", label: "Installation & civil works" },
+          { value: "AMC", label: "Maintenance after handover" },
+        ],
+      },
+    ],
+  },
   trust: [
     { icon: "shield", title: "Govt. licensed", text: "Registered with a trade license in Bangladesh" },
     { icon: "globe", title: "Software worldwide", text: "Remote delivery to clients in any country" },
@@ -95,18 +139,32 @@ const en = {
   reach: {
     eyebrow: "Where we work",
     title: "Built in Bangladesh. Delivered to the world.",
-    world: {
-      tag: "Worldwide",
-      title: "Software & IT services",
-      text: "We work remotely with clients in any country — clear scope, regular demos, and communication on WhatsApp, email or video call.",
-      points: ["Websites, apps & custom software", "Pricing in USD or BDT", "Overlapping hours with Asia, Middle East & Europe"],
-    },
-    local: {
-      tag: "Bangladesh only",
-      title: "Equipment supply & installation",
-      text: "Our supply and installation teams work on-site in Bangladesh — from Dhaka to your factory, school or office.",
-      points: ["Quotation in BDT", "Delivery to your site", "Installation, training & after-sales"],
-    },
+    items: [
+      {
+        id: "software",
+        icon: "globe",
+        tag: "Worldwide",
+        title: "Software & IT services",
+        text: "We work remotely with clients in any country — clear scope, regular demos, and communication on WhatsApp, email or video call.",
+        points: ["Websites, apps & custom software", "Pricing in USD or BDT", "Overlapping hours with Asia, Middle East & Europe"],
+      },
+      {
+        id: "supply",
+        icon: "shield",
+        tag: "Bangladesh",
+        title: "Licensed machinery supplier",
+        text: "As a Government-licensed supplier, we source machinery and equipment for factories, schools, hospitals and offices across Bangladesh.",
+        points: ["Quotation in BDT", "Genuine, branded equipment", "Delivered to your site"],
+      },
+      {
+        id: "install",
+        icon: "wrench",
+        tag: "Bangladesh",
+        title: "Installation & civil works",
+        text: "Our on-site teams install the machines and handle the electrical and civil works around them — then stay for training and support.",
+        points: ["Machine & equipment installation", "Electrical & civil works", "Training, AMC & after-sales"],
+      },
+    ],
   },
   products: {
     eyebrow: "Popular solutions",

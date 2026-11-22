@@ -241,7 +241,7 @@ const divisions = {
       coverage: "Bangladesh only",
       title: "Installed properly. Tested. Maintained.",
       subtitle:
-        "Electrical, solar, networking, CCTV and AC installation for factories, schools, hospitals and offices across Bangladesh — done neatly, safely and on schedule.",
+        "Electrical, civil, solar, networking, CCTV and AC works for factories, schools, hospitals and offices across Bangladesh — done neatly, safely and on schedule.",
       highlights: ["Site survey before quotation", "Safe, tidy workmanship", "Maintenance contracts"],
     },
     offer: {
@@ -256,6 +256,13 @@ const divisions = {
           title: "Electrical Installation",
           description: "Wiring and power setup for new buildings, factory floors and renovations.",
           points: ["Building & factory wiring", "Generator & IPS installation", "Distribution panels & earthing"],
+        },
+        {
+          id: "civil",
+          icon: "building",
+          title: "Civil Works",
+          description: "The building work around your machines — so every installation has a solid, safe base.",
+          points: ["Machine foundations & plinths", "Cable trenches & ducting", "Partition, flooring & site fit-out"],
         },
         {
           id: "solar-install",
@@ -284,13 +291,6 @@ const divisions = {
           title: "ICT Lab & Smart Classroom Setup",
           description: "Turnkey lab and classroom setup for schools, colleges and madrasas.",
           points: ["Computer lab setup", "Interactive display installation", "Networking & software setup"],
-        },
-        {
-          id: "maintenance",
-          icon: "wrench",
-          title: "Maintenance (AMC)",
-          description: "Scheduled check-ups and quick response when something stops working.",
-          points: ["Annual maintenance contracts", "Preventive servicing", "Breakdown support"],
         },
       ],
     },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui";
 import { PageHero } from "@/components/PageHero";
+import { SectionBg } from "@/components/Media";
 import { ContactForm } from "@/components/ContactForm";
 import { Reveal } from "@/components/Reveal";
 import type { Locale } from "@/i18n/config";
@@ -27,8 +28,9 @@ export default async function ContactPage({ params }: Props) {
 
   return (
     <>
-      <PageHero eyebrow={c.eyebrow} title={c.title} subtitle={c.subtitle} />
-      <section className="py-20 sm:py-28">
+      <PageHero eyebrow={c.eyebrow} title={c.title} subtitle={c.subtitle} cover="contact/cover" />
+      <section className="relative isolate py-20 sm:py-28">
+        <SectionBg slot="contact/bg-form" />
         <Container className="grid gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
           <Reveal>
             <ContactForm t={c.form} />

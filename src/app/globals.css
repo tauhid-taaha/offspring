@@ -17,14 +17,14 @@
   --color-fg-muted: #525a6b;
   --color-fg-subtle: #858c9b;
 
-  /* Brand accent — "signal blue" to "pulse teal" */
-  --color-signal: #2f52f5;
-  --color-signal-soft: #e9edff;
-  --color-pulse: #0ba89b;
+  /* Brand colours — sampled from the logo: deep teal-green → bright green */
+  --color-signal: #00775f;
+  --color-signal-soft: #e3f4ec;
+  --color-pulse: #1fa85a;
   /* Warm action colour for primary CTAs */
   --color-accent: #ffb21e;
   --color-accent-strong: #f59e0b;
-  --color-navy: #0b1b3f;
+  --color-navy: #02283a;
 
   --color-line: rgb(10 13 20 / 0.08);
   --color-line-strong: rgb(10 13 20 / 0.14);
@@ -36,6 +36,10 @@
 
   @keyframes dash {
     to { stroke-dashoffset: -200; }
+  }
+  @keyframes grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -63,7 +67,7 @@ body {
 }
 html[lang="bn"] body { font-family: var(--font-bangla); }
 
-::selection { background: rgb(47 82 245 / 0.18); color: var(--color-fg); }
+::selection { background: rgb(0 119 95 / 0.18); color: var(--color-fg); }
 
 :focus-visible {
   outline: 2px solid var(--color-signal);

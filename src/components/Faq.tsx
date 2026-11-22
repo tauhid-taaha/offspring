@@ -29,7 +29,7 @@ export function ChatButton({ whatsapp, contactHref, label }: { whatsapp: string;
       target={whatsapp ? "_blank" : undefined}
       rel={whatsapp ? "noopener noreferrer" : undefined}
       aria-label={label}
-      className="group fixed bottom-5 right-5 z-40 flex h-14 items-center gap-2 rounded-full bg-pulse pl-4 pr-4 text-white shadow-[0_16px_40px_-12px_rgb(11_168_155/0.7)] transition-all hover:pr-5 sm:bottom-7 sm:right-7"
+      className="group fixed bottom-5 right-5 z-40 flex h-14 items-center gap-2 rounded-full bg-pulse pl-4 pr-4 text-white shadow-[0_16px_40px_-12px_rgb(31_168_90/0.7)] transition-all hover:pr-5 sm:bottom-7 sm:right-7"
     >
       <Icon name="chat" className="h-6 w-6" />
       <span className="max-w-0 overflow-hidden whitespace-nowrap text-[14px] font-semibold transition-all duration-300 group-hover:max-w-[160px]">
