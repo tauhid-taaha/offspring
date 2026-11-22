@@ -21,15 +21,7 @@ export function Header({
   divisions: DivisionLink[];
 }) {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -45,13 +37,8 @@ export function Header({
   ];
 
   return (
-    <header
-      className={clsx(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        "border-b bg-canvas/85 backdrop-blur-xl",
-        scrolled || open ? "border-line" : "border-transparent",
-      )}
-    >
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="border-b border-transparent bg-transparent">
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-5 sm:px-8">
         <Link href={href(locale)} aria-label="Offspring Technologies — home">
           <Logo />
@@ -132,16 +119,17 @@ export function Header({
           </button>
         </div>
       </div>
+      </div>
 
       {/* Mobile menu */}
       <div
         id="mobile-nav"
         className={clsx(
           "overflow-hidden transition-[max-height] duration-300 md:hidden",
-          open ? "max-h-[100dvh]" : "max-h-0",
+          open ? "max-h-[calc(100dvh-4rem)]" : "max-h-0",
         )}
       >
-        <nav className="flex h-[calc(100dvh-4rem)] flex-col gap-1 overflow-y-auto px-5 pb-10 pt-2" aria-label="Mobile">
+        <nav className="flex h-[calc(100dvh-4rem)] flex-col gap-1 overflow-y-auto bg-canvas/95 px-5 pb-10 pt-2 backdrop-blur-xl" aria-label="Mobile">
           {links.map((l, i) => (
             <div key={l.to} className="border-b border-line py-4">
               <Link href={l.to} onClick={() => setOpen(false)} className="text-2xl font-medium tracking-tight text-fg">

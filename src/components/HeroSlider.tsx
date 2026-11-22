@@ -100,9 +100,8 @@ export function HeroSlider({
       </div>
 
       {/* Controls */}
-      <div className="mt-6 flex items-center gap-3">
-        <ArrowBtn label={labels.prev} onClick={() => go(active - 1)} flip />
-        <div role="tablist" className="grid flex-1 grid-cols-3 gap-2">
+      <div className="mt-6">
+        <div role="tablist" className="grid grid-cols-3 gap-2">
           {slides.map((slide, i) => (
             <button
               key={slide.id}
@@ -139,7 +138,6 @@ export function HeroSlider({
             </button>
           ))}
         </div>
-        <ArrowBtn label={labels.next} onClick={() => go(active + 1)} />
       </div>
     </div>
   );
@@ -193,18 +191,5 @@ function Stat({ value, label, on, delay }: { value: string; label: string; on: b
       <span className="text-xl font-semibold tracking-tight text-fg sm:text-3xl">{value}</span>
       <span className="mt-1.5 text-[13px] leading-snug text-fg-muted sm:text-[17px]">{label}</span>
     </div>
-  );
-}
-
-function ArrowBtn({ label, onClick, flip }: { label: string; onClick: () => void; flip?: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className="group flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line-strong bg-canvas text-fg transition-colors hover:border-signal hover:text-signal"
-    >
-      <Arrow className={flip ? "rotate-180" : ""} />
-    </button>
   );
 }
