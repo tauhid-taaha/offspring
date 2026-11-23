@@ -17,13 +17,14 @@ const en = {
   },
   nav: {
     solutions: "Solutions",
-    industries: "Industries",
     about: "About",
     contact: "Contact",
     cta: "Get a free quote",
     menu: "Menu",
     close: "Close",
     learnMore: "Learn more",
+    viewAll: "View all",
+    seeDetails: "See details",
   },
   hero: {
     eyebrow: "Software · Equipment · Engineering",
@@ -173,24 +174,28 @@ const en = {
     items: [
       {
         icon: "school",
+        id: "school-college",
         title: "School & College Management",
         text: "Admission, attendance, exams & results, fees and guardian SMS — in one system.",
         tags: ["Online admission", "Result cards", "Fee collection", "Guardian SMS"],
       },
       {
         icon: "chart",
+        id: "erp",
         title: "Business & Factory ERP",
         text: "Inventory, sales, purchase, accounts, HR and payroll — with reports you can trust.",
         tags: ["Inventory", "Accounts", "HR & payroll", "POS"],
       },
       {
         icon: "globe",
+        id: "websites",
         title: "Websites & Portfolios",
         text: "Fast, mobile-friendly websites for companies, institutions and professionals.",
         tags: ["Company sites", "Personal portfolios", "E-commerce", "Bangla/English"],
       },
       {
         icon: "phone",
+        id: "mobile",
         title: "Mobile Apps",
         text: "Android and iOS apps for customers, students, staff and field teams.",
         tags: ["Android", "iOS", "Admin panel", "Push notifications"],
@@ -228,20 +233,6 @@ const en = {
       { title: "Build / Supply", description: "We develop the software or source the equipment." },
       { title: "Deliver", description: "Launch, installation and training for your team." },
       { title: "Support", description: "Fixes, updates and maintenance when you need them." },
-    ],
-  },
-  industries: {
-    eyebrow: "Who we serve",
-    title: "Built for the organisations that run Bangladesh.",
-    items: [
-      { icon: "school", title: "Schools, Colleges & Madrasas", text: "Management software, ICT labs and smart classrooms." },
-      { icon: "book", title: "Coaching Centres", text: "Student records, fees, online exams and SMS." },
-      { icon: "thread", title: "Garments & Textile", text: "Machinery, power backup and production ERP." },
-      { icon: "gear", title: "Factories & Manufacturing", text: "Industrial machines, installation and inventory systems." },
-      { icon: "cart", title: "Retail & E-commerce", text: "Online stores, POS and payment integration." },
-      { icon: "medical", title: "Hospitals & Clinics", text: "Medical equipment, CCTV and patient management." },
-      { icon: "building", title: "NGOs & Offices", text: "IT setup, networking, websites and internal tools." },
-      { icon: "rocket", title: "Startups & Professionals", text: "MVPs, mobile apps and personal portfolios — worldwide." },
     ],
   },
   faq: {

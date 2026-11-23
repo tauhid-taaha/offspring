@@ -13,7 +13,6 @@ const bn: PartialDictionary = {
   },
   nav: {
     solutions: "সমাধান",
-    industries: "শিল্পখাত",
     about: "আমাদের সম্পর্কে",
     contact: "যোগাযোগ",
     cta: "প্রকল্প শুরু করুন",

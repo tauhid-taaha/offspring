@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import { AnimatePresence, m } from "motion/react";
 import { Arrow, Icon } from "./ui";
 
 export type HeroSlide = {
@@ -67,10 +68,19 @@ export function HeroSlider({
     >
       {/* Caption row */}
       <div className="mb-5 flex items-center justify-between gap-4">
-        <span className="inline-flex items-center gap-2 rounded-full bg-signal-soft px-3 py-1.5 text-[13px] font-semibold text-signal">
-          <Icon name={s.icon} className="h-4 w-4" />
-          {s.tag}
-        </span>
+        <AnimatePresence mode="wait" initial={false}>
+          <m.span
+            key={s.id}
+            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+            transition={{ duration: 0.3 }}
+            className="inline-flex items-center gap-2 rounded-full bg-signal-soft px-3 py-1.5 text-[13px] font-semibold text-signal"
+          >
+            <Icon name={s.icon} className="h-4 w-4" />
+            {s.tag}
+          </m.span>
+        </AnimatePresence>
         <Link href={s.href} className="group inline-flex shrink-0 items-center gap-1.5 text-[14px] font-semibold text-fg hover:text-signal">
           {labels.explore}
           <Arrow />
@@ -86,7 +96,7 @@ export function HeroSlider({
               key={slide.id}
               aria-hidden={!on}
               className={clsx(
-                "grid grid-cols-2 gap-3 transition-opacity duration-700 [grid-area:stack] sm:gap-4",
+                "grid grid-cols-2 gap-3 transition-opacity duration-500 [grid-area:stack] sm:gap-4",
                 on ? "opacity-100" : "pointer-events-none opacity-0",
               )}
             >
@@ -110,10 +120,17 @@ export function HeroSlider({
               aria-label={slide.tag}
               onClick={() => go(i)}
               className={clsx(
-                "group relative overflow-hidden rounded-xl px-2 py-2.5 text-left transition-colors",
-                i === active ? "bg-canvas shadow-sm ring-1 ring-line" : "hover:bg-canvas/70",
+                "group relative isolate overflow-hidden rounded-xl px-2 py-2.5 text-left transition-colors",
+                i !== active && "hover:bg-canvas/70",
               )}
             >
+              {i === active && (
+                <m.span
+                  layoutId="hero-tab"
+                  className="absolute inset-0 -z-10 rounded-xl bg-canvas shadow-sm ring-1 ring-line"
+                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                />
+              )}
               <span className="flex items-center justify-center gap-2 sm:justify-start">
                 <Icon name={slide.icon} className={clsx("h-4 w-4 shrink-0", i === active ? "text-signal" : "text-fg-subtle")} />
                 <span
@@ -171,12 +188,15 @@ function Photo({
   large?: boolean;
 }) {
   return (
-    <div
+    <m.div
       className={clsx(
-        "relative overflow-hidden rounded-2xl bg-surface shadow-[0_20px_50px_-24px_rgb(10_13_20/0.4)] ring-1 ring-line transition-all duration-700 ease-out",
+        "relative overflow-hidden rounded-2xl bg-surface shadow-[0_20px_50px_-24px_rgb(10_13_20/0.4)] ring-1 ring-line",
         large ? "aspect-[3/2]" : "aspect-[7/5]",
-        on ? "translate-x-0" : from === "left" ? "-translate-x-6" : "translate-x-6",
       )}
+      initial={false}
+      animate={on ? { x: 0, scale: 1, rotate: 0 } : { x: from === "left" ? -36 : 36, scale: 0.94, rotate: from === "left" ? -1.5 : 1.5 }}
+      whileHover={{ y: -4, scale: 1.015 }}
+      transition={{ type: "spring", stiffness: 160, damping: 22 }}
     >
       {src ? (
         <Image src={src} alt={alt} fill sizes={large ? "(min-width: 1024px) 420px, 46vw" : "(min-width: 1024px) 340px, 45vw"} className="object-cover" priority={on} />
@@ -190,21 +210,20 @@ function Photo({
           </div>
         </div>
       )}
-    </div>
+    </m.div>
   );
 }
 
 function Stat({ value, label, on, delay }: { value: string; label: string; on: boolean; delay: number }) {
   return (
-    <div
-      className={clsx(
-        "flex flex-col items-center justify-center px-2 text-center transition-all duration-700",
-        on ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-      )}
-      style={{ transitionDelay: on ? `${delay}ms` : "0ms" }}
+    <m.div
+      className="flex flex-col items-center justify-center px-2 text-center"
+      initial={false}
+      animate={on ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 14, filter: "blur(6px)" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: on ? delay / 1000 : 0 }}
     >
       <span className="text-xl font-semibold tracking-tight text-fg sm:text-3xl">{value}</span>
       <span className="mt-1.5 text-[13px] leading-snug text-fg-muted sm:text-[17px]">{label}</span>
-    </div>
+    </m.div>
   );
 }

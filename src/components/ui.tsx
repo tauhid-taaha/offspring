@@ -52,7 +52,7 @@ export function ButtonLink({ variant = "primary", className, children, ...props 
     <Link
       {...props}
       className={clsx(
-        "group inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-medium transition-all duration-200",
+        "group inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-medium transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97]",
         variant === "primary" &&
           "bg-accent text-ink font-semibold shadow-[0_8px_24px_-10px_rgb(245_158_11/0.7)] hover:bg-accent-strong",
         variant === "secondary" &&

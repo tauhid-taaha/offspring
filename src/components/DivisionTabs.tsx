@@ -4,7 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
+import { AnimatePresence, m } from "motion/react";
 import { Arrow, Icon } from "./ui";
+
+const rise = {
+  hidden: { opacity: 0, y: 18, filter: "blur(4px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
+};
 
 type Tab = {
   id: string;
@@ -36,24 +42,40 @@ export function DivisionTabs({ tabs, cta }: { tabs: Tab[]; cta: string }) {
             aria-controls={`panel-${tab.id}`}
             onClick={() => setActive(i)}
             className={clsx(
-              "flex flex-col items-center gap-1.5 rounded-xl px-3 py-3 text-[13px] font-medium transition-all sm:flex-row sm:gap-2.5 sm:px-5 sm:text-[14px]",
-              i === active ? "bg-canvas text-fg shadow-sm ring-1 ring-line" : "text-fg-muted hover:text-fg",
+              "relative isolate flex flex-col items-center gap-1.5 rounded-xl px-3 py-3 text-[13px] font-medium transition-colors sm:flex-row sm:gap-2.5 sm:px-5 sm:text-[14px]",
+              i === active ? "text-fg" : "text-fg-muted hover:text-fg",
             )}
           >
+            {i === active && (
+              <m.span
+                layoutId="division-tab"
+                className="absolute inset-0 -z-10 rounded-xl bg-canvas shadow-sm ring-1 ring-line"
+                transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              />
+            )}
             <Icon name={tab.icon} className={clsx("h-5 w-5", i === active && "text-signal")} />
             <span className="text-center leading-tight">{tab.title}</span>
           </button>
         ))}
       </div>
 
-      <div
+      <AnimatePresence mode="wait" initial={false}>
+      <m.div
         key={t.id}
         role="tabpanel"
         id={`panel-${t.id}`}
         aria-labelledby={`tab-${t.id}`}
-        className="fade-up mt-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+        className="mt-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+        initial="hidden"
+        animate="show"
+        exit="exit"
+        variants={{
+          hidden: { opacity: 0 },
+          show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+          exit: { opacity: 0, transition: { duration: 0.18 } },
+        }}
       >
-        <div>
+        <m.div variants={rise}>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-signal-soft px-3 py-1 text-[12px] font-medium text-signal">
             <Icon name={t.scopeIcon} className="h-3.5 w-3.5" />
             {t.scope}
@@ -78,23 +100,27 @@ export function DivisionTabs({ tabs, cta }: { tabs: Tab[]; cta: string }) {
             {cta}
             <Arrow />
           </Link>
-        </div>
+        </m.div>
 
         {t.image ? (
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[28px] bg-surface ring-1 ring-line">
-            <Image src={t.image} alt={t.title} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-          </div>
+          <m.div
+            variants={{ hidden: { opacity: 0, scale: 0.96, x: 24 }, show: { opacity: 1, scale: 1, x: 0, transition: { type: "spring", stiffness: 140, damping: 20 } } }}
+            className="relative aspect-[4/3] overflow-hidden rounded-[28px] bg-surface ring-1 ring-line"
+          >
+            <Image src={t.image} alt={t.title} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover transition-transform duration-[1.2s] ease-out hover:scale-[1.04]" />
+          </m.div>
         ) : (
           /* No photo: a plain numbered list */
-          <ol className="border-t border-line">
+          <m.ol className="border-t border-line" variants={{ show: { transition: { staggerChildren: 0.07 } } }}>
             {t.points.map((p) => (
-              <li key={p} className="border-b border-line py-5">
+              <m.li key={p} variants={rise} className="border-b border-line py-5">
                 <span className="text-lg font-medium tracking-tight sm:text-xl">{p}</span>
-              </li>
+              </m.li>
             ))}
-          </ol>
+          </m.ol>
         )}
-      </div>
+      </m.div>
+      </AnimatePresence>
     </div>
   );
 }

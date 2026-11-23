@@ -4,12 +4,15 @@ import { ChatButton } from "@/components/Faq";
 import { company } from "@/config/company";
 import { href, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { MotionProvider } from "@/components/motion/MotionProvider";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 
 export function SiteChrome({ locale, children }: { locale: Locale; children: React.ReactNode }) {
   const dict = getDictionary(locale);
 
   return (
-    <>
+    <MotionProvider>
+      <ScrollProgress />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-fg focus:px-4 focus:py-2 focus:text-canvas"
@@ -28,6 +31,6 @@ export function SiteChrome({ locale, children }: { locale: Locale; children: Rea
         contactHref={href(locale, "/contact")}
         label={company.whatsapp ? dict.contact.details.whatsapp : dict.nav.contact}
       />
-    </>
+    </MotionProvider>
   );
 }

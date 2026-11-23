@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Container, Eyebrow, Icon } from "@/components/ui";
+import { Container, Eyebrow, Icon, SectionHeading } from "@/components/ui";
 import { company } from "@/config/company";
 import { PageHero } from "@/components/PageHero";
 import { SectionBg } from "@/components/Media";
@@ -96,6 +96,46 @@ export default async function AboutPage({ params }: Props) {
               </Reveal>
             ))}
           </div>
+        </Container>
+      </section>
+
+      {/* ───────── Why choose us (moved from home) ───────── */}
+      <section className="relative isolate py-24 sm:py-32">
+        <SectionBg slot="about/bg-why" />
+        <Container className="grid gap-14 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+          <Reveal>
+            <SectionHeading eyebrow={t.principles.eyebrow} title={t.principles.title} />
+          </Reveal>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {t.principles.items.map((item, i) => (
+              <Reveal key={item.title} delay={i * 80} className="card-surface rounded-3xl p-7">
+                <h3 className="text-lg font-semibold tracking-tight">{item.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{item.description}</p>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ───────── Process ───────── */}
+      <section className="relative isolate border-y border-line bg-surface py-24 sm:py-32">
+        <SectionBg slot="about/bg-process" />
+        <Container>
+          <Reveal>
+            <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} />
+          </Reveal>
+          <ol className="relative mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            <div className="absolute left-0 right-0 top-[22px] hidden h-px bg-gradient-to-r from-signal/50 via-signal/30 to-pulse/50 lg:block" />
+            {t.process.steps.map((s, i) => (
+              <Reveal as="li" key={s.title} delay={i * 90} className="relative">
+                <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full bg-signal font-semibold text-white ring-8 ring-surface">
+                  {i + 1}
+                </span>
+                <h3 className="mt-5 text-lg font-semibold tracking-tight">{s.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{s.description}</p>
+              </Reveal>
+            ))}
+          </ol>
         </Container>
       </section>
 

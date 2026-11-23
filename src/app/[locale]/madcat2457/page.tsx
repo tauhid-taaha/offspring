@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { logout } from "./actions";
+import { AdminShell } from "./admin-shell";
 import { LoginForm } from "./login-form";
 import { isDeskAuthed } from "@/lib/admin-session";
 import { getSupabaseAdmin } from "@/lib/supabase";
@@ -83,25 +83,12 @@ export default async function DeskPage({
   const failed = Boolean(loaded?.error);
 
   return (
-    <main id="main" className="min-h-dvh px-5 py-10 sm:px-8">
-      <div className="mx-auto w-full max-w-3xl">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="font-mono text-[12px] uppercase tracking-[0.18em] text-fg-subtle">Offspring</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">Messages</h1>
-          </div>
-          <form action={logout}>
-            <input type="hidden" name="locale" value={locale} />
-            <button type="submit" className="h-10 rounded-full border border-line-strong px-4 text-[14px] hover:bg-fg/5">
-              Log out
-            </button>
-          </form>
-        </div>
+    <AdminShell locale={locale} active="messages" title="Messages">
 
         {!supabase && (
           <p className="card-surface mt-8 rounded-2xl p-5 text-[15px] leading-relaxed text-fg-muted">
             The inbox needs the Supabase secret key. In Project Settings → API Keys, copy the secret key into{" "}
-            <span className="font-mono text-[13px] text-fg">SUPABASE_SERVICE_ROLE_KEY</span> in `.env.local`, then restart the site. Keep that key out of chat.
+            <span className="font-mono text-[13px] text-fg">SUPABASE_SERVICE_ROLE_KEY</span> in `.env`, then restart the site. Keep that key out of chat.
           </p>
         )}
 
@@ -223,7 +210,6 @@ export default async function DeskPage({
             ))}
           </ul>
         )}
-      </div>
-    </main>
+    </AdminShell>
   );
 }

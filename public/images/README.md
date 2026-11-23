@@ -35,9 +35,8 @@ Text stays readable automatically:
 | `card-software.jpg` | "Where we work" · card 1, Software & IT services (navy) | 1200 × 1400 |
 | `card-supply.jpg` | "Where we work" · card 2, Licensed machinery supplier (mint) | 1200 × 1400 |
 | `card-install.jpg` | "Where we work" · card 3, Installation & civil works (white) | 1200 × 1400 |
-| `bg-industries.jpg` | Background of the navy "Who we serve" band | 2400 × 1400 |
-| `bg-why.jpg` | Background of "Why choose us" section | 2400 × 1400 |
-| `bg-process.jpg` | Background of "How it works" section | 2400 × 1400 |
+| `bg-supply.jpg` | Background of the "Machines and equipment we supply" section | 2400 × 1400 |
+| `bg-install.jpg` | Background of the "Installation & consultancy" section | 2400 × 1400 |
 | `bg-faq.jpg` | Background of the FAQ section | 2400 × 1400 |
 
 ## 2. Software & IT page → `public/images/divisions/digital/`
@@ -112,6 +111,8 @@ Text stays readable automatically:
 | `bg-license.jpg` | Background behind the "Licensed in Bangladesh" block | 2400 × 1000 |
 | `bg-values.jpg` | Background of "Our values" | 2400 × 1400 |
 | `bg-divisions.jpg` | Background of the divisions list | 2400 × 1400 |
+| `bg-why.jpg` | Background of "Why choose us" | 2400 × 1400 |
+| `bg-process.jpg` | Background of "How it works" | 2400 × 1400 |
 
 ## 7. Contact page → `public/images/contact/`
 
@@ -127,6 +128,9 @@ Text stays readable automatically:
 | `bg-cta.jpg` | Background of the dark "Tell us what you need" box at the bottom of every page | 2400 × 1000 |
 
 ---
+
+### Card photos (home page)
+Photos for the cards in the Software, Supply and Installation sections are **not** files here — upload them in the admin area → **Cards** → Add / Edit card. Landscape photos (about 1600 × 1000) look best.
 
 ### Tips
 - Keep each photo under ~500 KB (compress at squoosh.app or tinypng.com). Big files slow the site.

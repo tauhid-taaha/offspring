@@ -38,7 +38,6 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
           <FooterCol title={footer.company}>
             <FooterLink to={href(locale, "/about")}>{nav.about}</FooterLink>
-            <FooterLink to={`${href(locale)}#industries`}>{nav.industries}</FooterLink>
             <FooterLink to={href(locale, "/contact")}>{nav.contact}</FooterLink>
           </FooterCol>
 
