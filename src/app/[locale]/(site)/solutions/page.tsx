@@ -25,16 +25,15 @@ export default async function SolutionsPage({ params }: Props) {
     <>
       <PageHero eyebrow={s.eyebrow} title={s.title} subtitle={s.subtitle} cover="solutions/cover" />
 
-      {/* Sticky in-page nav */}
-      <div className="sticky top-16 z-40 border-b border-line bg-canvas/80 backdrop-blur-xl">
+      {/* In-page links */}
+      <div className="border-b border-line">
         <Container className="flex gap-1 overflow-x-auto py-3 [scrollbar-width:none]">
           {t.pillars.map((p) => (
             <a
               key={p.id}
               href={`#${p.id}`}
-              className="shrink-0 rounded-full px-4 py-2 text-[14px] text-fg-muted transition-colors hover:bg-fg/5 hover:text-fg"
+              className="shrink-0 rounded-full px-4 py-2 text-[14px] text-fg-muted"
             >
-              <span className="mr-2 font-mono text-[11px] text-fg-subtle">{p.label}</span>
               {p.title}
             </a>
           ))}
@@ -45,18 +44,17 @@ export default async function SolutionsPage({ params }: Props) {
         <section
           key={p.id}
           id={p.id}
-          className={clsx("relative isolate scroll-mt-32 py-24 sm:py-32", i % 2 === 1 && "border-y border-line bg-surface")}
+          className={clsx("relative isolate scroll-mt-24 py-24 sm:py-32", i % 2 === 1 && "border-y border-line bg-surface")}
         >
           <SectionBg slot={`solutions/bg-${p.id}`} />
           <Container className="grid gap-12 lg:grid-cols-2 lg:gap-20">
             <Reveal>
               <div className="flex items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-line-strong bg-surface text-signal">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-line-strong bg-surface text-signal">
                   <Icon name={p.icon} className="h-6 w-6" />
                 </span>
-                <span className="font-mono text-[13px] text-fg-subtle">{p.label} / 03</span>
+                <h2 className="text-gradient text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">{p.title}</h2>
               </div>
-              <h2 className="text-gradient mt-8 text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">{p.title}</h2>
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-fg-muted">{p.description}</p>
               <ButtonLink href={href(locale, `/solutions/${p.id}`)} className="mt-8">
                 {t.divisionPage.viewDetails}

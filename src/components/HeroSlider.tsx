@@ -143,28 +143,43 @@ export function HeroSlider({
   );
 }
 
+/** One division's home-hero collage, held still — no autoplay or tabs. */
+export function HeroPanel({ slide }: { slide: HeroSlide }) {
+  return (
+    <div className="grid w-full grid-cols-2 gap-2.5 sm:gap-3">
+      <Photo src={slide.images[0]} icon={slide.icons[0]} alt={slide.tag} on from="left" large />
+      <Stat {...slide.stats[0]} on delay={0} />
+      <Stat {...slide.stats[1]} on delay={0} />
+      <Photo src={slide.images[1]} icon={slide.icons[1]} alt={slide.caption} on from="right" large />
+    </div>
+  );
+}
+
 function Photo({
   src,
   icon,
   alt,
   on,
   from,
+  large = false,
 }: {
   src: string | null;
   icon: string;
   alt: string;
   on: boolean;
   from: "left" | "right";
+  large?: boolean;
 }) {
   return (
     <div
       className={clsx(
-        "relative aspect-[7/5] overflow-hidden rounded-2xl bg-surface shadow-[0_20px_50px_-24px_rgb(10_13_20/0.4)] ring-1 ring-line transition-all duration-700 ease-out",
+        "relative overflow-hidden rounded-2xl bg-surface shadow-[0_20px_50px_-24px_rgb(10_13_20/0.4)] ring-1 ring-line transition-all duration-700 ease-out",
+        large ? "aspect-[3/2]" : "aspect-[7/5]",
         on ? "translate-x-0" : from === "left" ? "-translate-x-6" : "translate-x-6",
       )}
     >
       {src ? (
-        <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 340px, 45vw" className="object-cover" priority={on} />
+        <Image src={src} alt={alt} fill sizes={large ? "(min-width: 1024px) 420px, 46vw" : "(min-width: 1024px) 340px, 45vw"} className="object-cover" priority={on} />
       ) : (
         <div className="absolute inset-0 bg-[linear-gradient(135deg,#e6f4ee_0%,#eefaf0_100%)]">
           <div className="bg-grid absolute inset-0 [background-size:24px_24px] [mask-image:radial-gradient(circle,#000_30%,transparent_75%)]" />

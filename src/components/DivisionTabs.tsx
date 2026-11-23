@@ -87,9 +87,8 @@ export function DivisionTabs({ tabs, cta }: { tabs: Tab[]; cta: string }) {
         ) : (
           /* No photo: a plain numbered list */
           <ol className="border-t border-line">
-            {t.points.map((p, i) => (
-              <li key={p} className="flex items-baseline gap-6 border-b border-line py-5">
-                <span className="w-6 shrink-0 font-mono text-[13px] text-signal">{String(i + 1).padStart(2, "0")}</span>
+            {t.points.map((p) => (
+              <li key={p} className="border-b border-line py-5">
                 <span className="text-lg font-medium tracking-tight sm:text-xl">{p}</span>
               </li>
             ))}

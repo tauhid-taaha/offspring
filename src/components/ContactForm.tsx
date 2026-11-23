@@ -3,22 +3,20 @@
 import { useState, type FormEvent } from "react";
 import clsx from "clsx";
 import type { Dictionary } from "@/i18n/dictionaries/en";
+import { submitQuote } from "@/app/actions/quote";
 
 type Form = Dictionary["contact"]["form"];
 
-/**
- * UI-only contact form. No backend yet — submit simulates a request.
- * Phase 2: replace `fakeSubmit` with a POST to an API route / form service.
- */
 export function ContactForm({ t }: { t: Form }) {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!e.currentTarget.checkValidity()) return;
+    const form = e.currentTarget;
+    if (!form.checkValidity()) return;
     setStatus("sending");
-    await new Promise((r) => setTimeout(r, 900)); // fakeSubmit
-    setStatus("sent");
+    const result = await submitQuote(new FormData(form));
+    setStatus(result.ok ? "sent" : "error");
   }
 
   if (status === "sent") {
@@ -43,7 +41,7 @@ export function ContactForm({ t }: { t: Form }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="card-surface grid gap-5 rounded-3xl p-6 sm:grid-cols-2 sm:p-10">
+    <form onSubmit={onSubmit} className="card-surface grid gap-4 rounded-3xl p-5 sm:grid-cols-2 sm:p-7">
       <Field label={t.name} name="name" required autoComplete="name" />
       <Field label={t.email} name="email" type="email" required autoComplete="email" />
       <Field label={t.company} name="company" autoComplete="organization" />
@@ -73,7 +71,7 @@ export function ContactForm({ t }: { t: Form }) {
         <textarea
           name="message"
           required
-          rows={5}
+          rows={3}
           placeholder={t.messagePlaceholder}
           className={inputClass + " resize-y py-3"}
         />
@@ -87,6 +85,7 @@ export function ContactForm({ t }: { t: Form }) {
         >
           {status === "sending" ? t.sending : t.submit}
         </button>
+        {status === "error" && <p className="mt-3 text-[14px] text-pulse">{t.error}</p>}
       </div>
     </form>
   );

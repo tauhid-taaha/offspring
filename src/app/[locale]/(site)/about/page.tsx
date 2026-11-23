@@ -23,9 +23,9 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <>
-      <PageHero eyebrow={a.eyebrow} title={a.title} subtitle={a.intro} cover="about/cover" />
+      <PageHero eyebrow={a.eyebrow} title={a.title} subtitle={a.intro} cover="about/cover" map />
 
-      <section className="relative isolate py-24 sm:py-32">
+      <section className="relative isolate bg-ambient py-24 sm:py-32">
         <SectionBg slot="about/bg-mission" />
         <Container className="grid gap-4 md:grid-cols-2">
           {[
@@ -40,7 +40,7 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="relative isolate pb-24 sm:pb-32">
+      <section className="relative isolate bg-ambient pb-24 sm:pb-32">
         <SectionBg slot="about/bg-license" />
         <Container>
           <Reveal className="flex flex-col gap-6 rounded-3xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:p-12">
@@ -61,7 +61,7 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="relative isolate border-y border-line bg-surface py-24 sm:py-32">
+      <section className="relative isolate border-y border-line bg-ambient py-24 sm:py-32">
         <SectionBg slot="about/bg-values" />
         <Container>
           <Reveal>
@@ -70,8 +70,7 @@ export default async function AboutPage({ params }: Props) {
           <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {a.values.map((v, i) => (
               <Reveal key={v.title} delay={i * 80} className="bg-canvas p-7 sm:p-8">
-                <span className="font-mono text-[12px] text-signal">0{i + 1}</span>
-                <h3 className="mt-10 text-xl font-semibold tracking-tight">{v.title}</h3>
+                <h3 className="text-xl font-semibold tracking-tight">{v.title}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{v.description}</p>
               </Reveal>
             ))}
@@ -79,7 +78,7 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="relative isolate py-24 sm:py-32">
+      <section className="relative isolate bg-ambient py-24 sm:py-32">
         <SectionBg slot="about/bg-divisions" />
         <Container>
           <Reveal>
@@ -90,9 +89,8 @@ export default async function AboutPage({ params }: Props) {
               <Reveal
                 key={p.id}
                 delay={i * 80}
-                className="grid gap-3 py-8 sm:grid-cols-[80px_1fr_1.4fr] sm:items-baseline sm:gap-8"
+                className="grid gap-3 py-8 sm:grid-cols-[1fr_1.4fr] sm:items-baseline sm:gap-8"
               >
-                <span className="font-mono text-[13px] text-fg-subtle">{p.label}</span>
                 <h3 className="text-2xl font-semibold tracking-tight">{p.title}</h3>
                 <p className="leading-relaxed text-fg-muted">{p.description}</p>
               </Reveal>

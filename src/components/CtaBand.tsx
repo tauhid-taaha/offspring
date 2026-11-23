@@ -12,7 +12,7 @@ export function CtaBand({ locale, t }: { locale: Locale; t: Dictionary["cta"] })
       <Container>
         <Reveal>
           <div className="relative isolate overflow-hidden rounded-[32px] bg-ink px-6 py-16 text-center text-white sm:px-12 sm:py-24">
-            <SectionBg slot="shared/bg-cta" tone="dark" />
+            <SectionBg slot="shared/bg-cta" tone="dark" ambient={false} />
             <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(to_right,rgb(255_255_255/0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.05)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,#000_20%,transparent_75%)]" />
             <div className="absolute left-1/2 top-full h-[420px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.55),transparent)]" />
             <div className="relative">

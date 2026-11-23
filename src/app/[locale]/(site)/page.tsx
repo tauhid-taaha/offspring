@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ButtonLink, Container, Icon, SectionHeading, Arrow } from "@/components/ui";
 import { HeroSlider } from "@/components/HeroSlider";
+import { RouteMap } from "@/components/RouteMap";
 import { DivisionTabs } from "@/components/DivisionTabs";
 import { Faq } from "@/components/Faq";
 import { Reveal } from "@/components/Reveal";
@@ -46,15 +47,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <>
       {/* ───────── Split hero ───────── */}
       <section className={clsx("relative isolate overflow-hidden pb-28 pt-28 sm:pb-36 sm:pt-32", cover && "text-white")}>
-        {cover ? (
-          <Backdrop src={cover} tone="light" priority />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,#f1f8f4_0%,#ffffff_90%)]" />
-            {/* concentric rings behind the photos */}
-            <div className="absolute inset-0 bg-[repeating-radial-gradient(circle_at_78%_45%,transparent_0,transparent_26px,rgb(0_119_95/0.06)_27px,transparent_28px)] [mask-image:radial-gradient(circle_at_78%_45%,#000_10%,transparent_65%)]" />
-          </>
-        )}
+        <Backdrop src={cover} tone="light" priority />
+        {!cover && <RouteMap />}
 
         <Container className="relative grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           <div>
@@ -198,12 +192,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                       tone === "white" && "bg-canvas text-fg ring-1 ring-line",
                     )}
                   >
-                    <SectionBg slot={`home/card-${c.id}`} tone={dark ? "dark" : "light"} />
+                    <SectionBg slot={`home/card-${c.id}`} tone={dark ? "dark" : "light"} ambient={false} />
                     <Icon
                       name={c.icon}
                       className={clsx("absolute -right-8 -top-8 h-48 w-48", dark ? "text-white/[0.06]" : "text-signal/[0.07]")}
                     />
-                    <div className="relative flex items-center justify-between">
+                    <div className="relative">
                       <span
                         className={clsx(
                           "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold",
@@ -212,9 +206,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                       >
                         <Icon name={i === 0 ? "globe" : "pin"} className="h-3.5 w-3.5" />
                         {c.tag}
-                      </span>
-                      <span className={clsx("font-mono text-[13px]", dark ? "text-white/50" : "text-fg-subtle")}>
-                        {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
                     <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] sm:text-[28px]">{c.title}</h3>
@@ -235,32 +226,26 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </Container>
       </section>
 
-      {/* ───────── Who we serve (navy band) ───────── */}
-      <section id="industries" className="relative isolate scroll-mt-16 bg-navy py-24 text-white sm:py-32">
-        <SectionBg slot="home/bg-industries" tone="dark" />
+      {/* ───────── Who we serve ───────── */}
+      <section id="industries" className="relative isolate scroll-mt-16 border-y border-line bg-surface py-24 sm:py-32">
+        <SectionBg slot="home/bg-industries" />
         <Container>
           <Reveal>
-            <div className="max-w-2xl">
-              <p className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.2em] text-white/60">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                {t.industries.eyebrow}
-              </p>
-              <h2 className="text-gradient-light mt-5 text-balance text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
-                {t.industries.title}
-              </h2>
-            </div>
+            <SectionHeading eyebrow={t.industries.eyebrow} title={t.industries.title} />
           </Reveal>
-          <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {t.industries.items.map((it, i) => (
               <Reveal
                 as="li"
                 key={it.title}
                 delay={(i % 4) * 60}
-                className="group rounded-3xl bg-white/[0.05] p-7 ring-1 ring-white/10 transition-colors hover:bg-white/[0.09]"
+                className="card-surface flex h-full flex-col rounded-3xl p-7 transition-transform duration-300 hover:-translate-y-1"
               >
-                <Icon name={it.icon} className="h-8 w-8 text-white/90" />
-                <h3 className="mt-8 text-lg font-semibold tracking-tight">{it.title}</h3>
-                <p className="mt-2 text-[14px] leading-relaxed text-white/60">{it.text}</p>
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-signal-soft text-signal">
+                  <Icon name={it.icon} className="h-6 w-6" />
+                </span>
+                <h3 className="mt-7 text-lg font-semibold tracking-tight">{it.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{it.text}</p>
               </Reveal>
             ))}
           </ul>
@@ -277,10 +262,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div className="grid gap-4 sm:grid-cols-2">
             {t.principles.items.map((item, i) => (
               <Reveal key={item.title} delay={i * 80} className="card-surface rounded-3xl p-7">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/20 font-mono text-[13px] font-semibold text-ink">
-                  0{i + 1}
-                </span>
-                <h3 className="mt-6 text-lg font-semibold tracking-tight">{item.title}</h3>
+                <h3 className="text-lg font-semibold tracking-tight">{item.title}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-fg-muted">{item.description}</p>
               </Reveal>
             ))}

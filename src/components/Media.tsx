@@ -77,22 +77,66 @@ export function Backdrop({
   }
   return (
     <div className="absolute inset-0" aria-hidden="true">
-      <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_60%_80%_at_20%_0%,#000_30%,transparent_100%)]" />
-      <div className="absolute -left-40 -top-60 h-[520px] w-[820px] rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.10),transparent)] blur-2xl" />
+      <div className="absolute inset-0 bg-[linear-gradient(165deg,#e7f6ee_0%,#f7fbf8_42%,#ffffff_78%)]" />
+      <div className="absolute inset-0 bg-[repeating-radial-gradient(circle_at_78%_42%,transparent_0,transparent_26px,rgb(0_119_95/0.075)_27px,transparent_28px)] [mask-image:radial-gradient(circle_at_78%_42%,#000_12%,transparent_68%)]" />
+      <div className="bg-grid absolute inset-0 opacity-70 [mask-image:radial-gradient(ellipse_50%_80%_at_0%_0%,#000_25%,transparent_75%)]" />
+      <div className="absolute -left-24 top-8 h-[420px] w-[560px] rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.16),transparent)] blur-3xl" />
+      <div className="absolute -right-10 bottom-0 h-[280px] w-[420px] rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.10),transparent)] blur-3xl" />
     </div>
   );
 }
 
 /**
- * Optional photo background for any section. Renders nothing unless
- * public/images/<slot>.(webp|avif|jpg|jpeg|png) exists.
+ * Optional photo background for any section. If the photo is missing, a quiet
+ * grid and glow are painted instead so the section is not a flat field.
  * The parent section must be `relative isolate`.
  *  - tone "light": photo under a strong white wash (dark text stays readable)
  *  - tone "dark":  photo under a navy wash (white text stays readable)
  */
-export function SectionBg({ slot, tone = "light" }: { slot: string; tone?: "light" | "dark" }) {
+function Ambient({ tone, slot }: { tone: "light" | "dark"; slot: string }) {
+  const n = [...slot].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  const fromRight = n % 2 === 0;
+
+  if (tone === "dark") {
+    return (
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(255_255_255/0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.05)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,#000_18%,transparent_72%)]" />
+        <div className="absolute -right-16 top-0 h-72 w-[28rem] rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.35),transparent)]" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+      <div
+        className="bg-grid absolute inset-0 opacity-80"
+        style={{
+          maskImage: `radial-gradient(ellipse 60% 75% at ${fromRight ? "100% 0%" : "0% 100%"}, #000 12%, transparent 72%)`,
+          WebkitMaskImage: `radial-gradient(ellipse 60% 75% at ${fromRight ? "100% 0%" : "0% 100%"}, #000 12%, transparent 72%)`,
+        }}
+      />
+      <div
+        className="absolute h-[340px] w-[480px] rounded-full blur-3xl"
+        style={{
+          background: "radial-gradient(closest-side, rgb(0 119 95 / 0.11), transparent)",
+          ...(fromRight ? { right: "-3rem", top: "-4rem" } : { left: "-4rem", bottom: "-3rem" }),
+        }}
+      />
+    </div>
+  );
+}
+
+export function SectionBg({
+  slot,
+  tone = "light",
+  ambient = true,
+}: {
+  slot: string;
+  tone?: "light" | "dark";
+  ambient?: boolean;
+}) {
   const src = findSlot(slot);
-  if (!src) return null;
+  if (!src) return ambient ? <Ambient tone={tone} slot={slot} /> : null;
   return (
     <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
       <Image src={src} alt="" fill sizes="100vw" className="object-cover" />

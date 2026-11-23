@@ -4,12 +4,14 @@ import { notFound } from "next/navigation";
 import clsx from "clsx";
 import { Arrow, ButtonLink, Container, Eyebrow, Icon, SectionHeading } from "@/components/ui";
 import { Backdrop, ImageSlot, SectionBg } from "@/components/Media";
+import { HeroPanel } from "@/components/HeroSlider";
+import { RouteMap } from "@/components/RouteMap";
 import { Reveal } from "@/components/Reveal";
 import { CtaBand } from "@/components/CtaBand";
 import { href, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { divisionIds, type DivisionId } from "@/i18n/dictionaries/en-divisions";
-import { findImage } from "@/lib/images";
+import { findImage, findSlot } from "@/lib/images";
 
 type Props = { params: Promise<{ locale: string; division: string }> };
 
@@ -45,18 +47,33 @@ export default async function DivisionPage({ params }: Props) {
   const onPhoto = Boolean(heroImg);
   const isCatalog = d.offer.layout === "catalog";
   const others = divisionIds.filter((id) => id !== division).map((id) => t.divisions[id]);
+  const slide = t.heroSlides.items.find((item) => item.division === division);
+  const panel = slide
+    ? {
+        id: slide.id,
+        icon: slide.icon,
+        tag: slide.tag,
+        caption: slide.caption,
+        href: href(locale, `/solutions/${division}`),
+        icons: slide.icons,
+        images: [findSlot(`home/slide-${slide.id}-1`), findSlot(`home/slide-${slide.id}-2`)],
+        stats: slide.stats,
+      }
+    : null;
 
   return (
     <>
       {/* ───────── Hero (optional background image) ───────── */}
       <section
         className={clsx(
-          "relative isolate overflow-hidden border-b border-line pb-20 pt-32 sm:pb-28 sm:pt-40",
+          "relative isolate overflow-hidden border-b border-line pb-16 pt-28 sm:pb-20 sm:pt-32",
           onPhoto && "text-white",
         )}
       >
         <Backdrop src={heroImg} tone="light" priority />
-        <Container className="relative">
+        {!onPhoto && <RouteMap />}
+        <Container className="relative grid items-center gap-14 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-x-24">
+          <div>
           <nav aria-label="Breadcrumb" className="fade-up">
             <Link
               href={href(locale, "/solutions")}
@@ -80,7 +97,7 @@ export default async function DivisionPage({ params }: Props) {
               <Icon name={d.icon} />
             </span>
             <Eyebrow className={onPhoto ? "!text-white/75" : ""}>
-              {d.label} · {d.hero.eyebrow}
+              {d.hero.eyebrow}
             </Eyebrow>
             <span
               className={clsx(
@@ -95,7 +112,7 @@ export default async function DivisionPage({ params }: Props) {
 
           <h1
             className={clsx(
-              "fade-up mt-7 max-w-4xl text-balance text-[42px] font-semibold leading-[1.03] tracking-[-0.045em] sm:text-7xl",
+              "fade-up mt-7 max-w-xl text-balance text-[40px] font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl lg:text-6xl",
               onPhoto ? "text-gradient-light" : "text-gradient",
             )}
             style={{ animationDelay: "120ms" }}
@@ -120,13 +137,20 @@ export default async function DivisionPage({ params }: Props) {
               {ui.offerCta}
             </ButtonLink>
           </div>
+          </div>
 
-          <ul className="fade-up mt-12 flex flex-wrap gap-2" style={{ animationDelay: "300ms" }}>
+          {panel && (
+            <div className="fade-up" style={{ animationDelay: "180ms" }}>
+              <HeroPanel slide={panel} />
+            </div>
+          )}
+
+          <ul className="fade-up col-span-full flex flex-col gap-2 sm:flex-row sm:flex-nowrap" style={{ animationDelay: "300ms" }}>
             {d.hero.highlights.map((h) => (
               <li
                 key={h}
                 className={clsx(
-                  "inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[13px]",
+                  "inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[13px]",
                   onPhoto ? "border-white/20 bg-white/10 text-white/90 backdrop-blur" : "border-line-strong bg-canvas text-fg/80",
                 )}
               >
@@ -139,7 +163,7 @@ export default async function DivisionPage({ params }: Props) {
       </section>
 
       {/* ───────── What we offer / supply ───────── */}
-      <section id="offer" className="relative isolate scroll-mt-16 py-24 sm:py-32">
+      <section id="offer" className="relative isolate scroll-mt-16 bg-ambient py-24 sm:py-32">
         <SectionBg slot={`${imgDir}/bg-offer`} />
         <Container>
           <Reveal>
@@ -281,8 +305,7 @@ export default async function DivisionPage({ params }: Props) {
           </Reveal>
           <div className="grid gap-4">
             {d.extras.items.map((x, i) => (
-              <Reveal key={x.title} delay={i * 80} className="card-surface flex gap-5 rounded-2xl p-6 sm:p-7">
-                <span className="font-mono text-[13px] text-signal">0{i + 1}</span>
+              <Reveal key={x.title} delay={i * 80} className="card-surface rounded-2xl p-6 sm:p-7">
                 <div>
                   <h3 className="text-lg font-semibold tracking-tight">{x.title}</h3>
                   <p className="mt-1.5 leading-relaxed text-fg-muted">{x.description}</p>
@@ -312,7 +335,6 @@ export default async function DivisionPage({ params }: Props) {
                       <Icon name={o.icon} />
                     </span>
                     <div>
-                      <span className="font-mono text-[12px] text-fg-subtle">{o.label}</span>
                       <h3 className="text-xl font-semibold tracking-tight">{o.hero.eyebrow}</h3>
                     </div>
                   </div>
