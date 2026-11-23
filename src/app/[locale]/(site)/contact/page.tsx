@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Container, Eyebrow } from "@/components/ui";
 import { Backdrop } from "@/components/Media";
 import { RouteMap } from "@/components/RouteMap";
-import { ContactForm } from "@/components/ContactForm";
+import { QuoteForm } from "@/components/QuoteForm";
+import { buildQuoteCatalog } from "@/lib/quote-catalog";
 import { Reveal } from "@/components/Reveal";
 import { findSlot } from "@/lib/images";
 import type { Locale } from "@/i18n/config";
@@ -17,7 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
-  const c = getDictionary(locale as Locale).contact;
+  const dict = getDictionary(locale as Locale);
+  const c = dict.contact;
   const d = c.details;
 
   const cover = findSlot("contact/cover");
@@ -43,7 +45,7 @@ export default async function ContactPage({ params }: Props) {
           </Reveal>
           <div className="mt-8 grid items-start gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-12">
           <Reveal>
-            <ContactForm t={c.form} />
+            <QuoteForm t={c.form} q={c.quote} catalog={buildQuoteCatalog(dict)} />
           </Reveal>
           <Reveal delay={120}>
             <aside id="details" className="scroll-mt-28">

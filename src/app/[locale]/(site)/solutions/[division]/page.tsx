@@ -13,6 +13,8 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { divisionIds, type DivisionId } from "@/i18n/dictionaries/en-divisions";
 import { findImage, findSlot } from "@/lib/images";
 
+const quoteType = { digital: "software", equipment: "supply", engineering: "install" } as const;
+
 type Props = { params: Promise<{ locale: string; division: string }> };
 
 export const dynamicParams = false;
@@ -130,7 +132,7 @@ export default async function DivisionPage({ params }: Props) {
           </p>
 
           <div className="fade-up mt-10 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "240ms" }}>
-            <ButtonLink href={href(locale, "/contact")} variant={onPhoto ? "onDarkPrimary" : "primary"}>
+            <ButtonLink href={`${href(locale, "/contact")}?type=${quoteType[division]}`} variant={onPhoto ? "onDarkPrimary" : "primary"}>
               {isCatalog ? ui.quoteCta : t.nav.cta}
             </ButtonLink>
             <ButtonLink href="#offer" variant={onPhoto ? "onDarkSecondary" : "secondary"}>
@@ -203,7 +205,7 @@ export default async function DivisionPage({ params }: Props) {
                     <h3 className="text-xl font-semibold tracking-tight">{ui.sourceToSpec}</h3>
                     <p className="mt-1.5 text-fg-muted">{d.offer.subtitle}</p>
                   </div>
-                  <ButtonLink href={href(locale, "/contact")}>{ui.quoteCta}</ButtonLink>
+                  <ButtonLink href={`${href(locale, "/contact")}?type=${quoteType[division]}`}>{ui.quoteCta}</ButtonLink>
                 </div>
               </Reveal>
             </div>

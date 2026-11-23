@@ -3,6 +3,9 @@ import { logout } from "./actions";
 import { LoginForm } from "./login-form";
 import { isDeskAuthed } from "@/lib/admin-session";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import en from "@/i18n/dictionaries/en";
+import { isQuoteCategory, quoteCategoryIds, type QuoteCategoryId } from "@/lib/quote-catalog";
+import type { QuoteProduct } from "@/app/actions/quote";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +24,24 @@ type Quote = {
   location: string | null;
   interest: string;
   message: string;
+  category: QuoteCategoryId | null;
+  items: string[] | null;
+  details: Record<string, unknown> | null;
+};
+
+const qt = en.contact.quote;
+
+/** Labels for the detail fields, in display order. */
+const detailLabels: Record<string, string> = {
+  budget: qt.software.budget,
+  timeline: qt.software.timeline,
+  website: "Website",
+  district: "District",
+  neededBy: "Needed by",
+  siteType: qt.install.siteType,
+  size: "Size",
+  visitDate: "Site visit",
+  needSupply: "Supply equipment too",
 };
 
 const when = new Intl.DateTimeFormat("en-GB", {
@@ -34,10 +55,11 @@ export default async function DeskPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ e?: string }>;
+  searchParams: Promise<{ e?: string; c?: string }>;
 }) {
   const { locale } = await params;
-  const { e } = await searchParams;
+  const { e, c } = await searchParams;
+  const filter = isQuoteCategory(c) ? c : null;
 
   if (!(await isDeskAuthed())) {
     return (
@@ -51,10 +73,13 @@ export default async function DeskPage({
   const loaded = supabase
     ? await supabase
         .from("quote_requests")
-        .select("id, created_at, name, email, company, phone, location, interest, message")
+        .select("id, created_at, name, email, company, phone, location, interest, message, category, items, details")
         .order("created_at", { ascending: false })
     : null;
-  const quotes = (loaded?.data ?? []) as Quote[];
+  const all = (loaded?.data ?? []) as Quote[];
+  const quotes = filter ? all.filter((q) => q.category === filter) : all;
+  const count = (id: QuoteCategoryId | null) => (id ? all.filter((q) => q.category === id).length : all.length);
+  const tabs = [null, ...quoteCategoryIds] as const;
   const failed = Boolean(loaded?.error);
 
   return (
@@ -84,6 +109,28 @@ export default async function DeskPage({
           <p className="mt-8 text-[15px] text-pulse">Couldn’t load messages. Check the Supabase table and try again.</p>
         )}
 
+        {supabase && !failed && all.length > 0 && (
+          <nav aria-label="Filter by category" className="mt-8 flex flex-wrap gap-2">
+            {tabs.map((id) => {
+              const on = id === filter;
+              return (
+                <a
+                  key={id ?? "all"}
+                  href={id ? `?c=${id}` : "?"}
+                  aria-current={on ? "page" : undefined}
+                  className={
+                    "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-[14px] transition-colors " +
+                    (on ? "border-signal bg-signal/15 font-medium text-fg" : "border-line-strong text-fg-muted hover:bg-fg/5")
+                  }
+                >
+                  {id ? qt.categories[id].title : "All"}
+                  <span className="font-mono text-[12px] text-fg-subtle">{count(id)}</span>
+                </a>
+              );
+            })}
+          </nav>
+        )}
+
         {supabase && !failed && quotes.length === 0 && (
           <p className="mt-8 text-[15px] text-fg-muted">No messages yet.</p>
         )}
@@ -98,7 +145,16 @@ export default async function DeskPage({
                     {when.format(new Date(q.created_at))}
                   </time>
                 </div>
-                <p className="mt-1 text-[14px] text-signal">{q.interest}</p>
+                <p className="mt-1 text-[14px] font-medium text-signal">{q.category ? qt.categories[q.category].title : q.interest}</p>
+                {q.items && q.items.length > 0 && (
+                  <ul className="mt-3 flex flex-wrap gap-1.5">
+                    {q.items.map((item) => (
+                      <li key={item} className="rounded-full bg-signal-soft px-2.5 py-1 text-[12px] font-medium text-signal">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <dl className="mt-4 grid gap-2 text-[14px] sm:grid-cols-2">
                   <div>
                     <dt className="text-fg-subtle">Email</dt>
@@ -128,8 +184,41 @@ export default async function DeskPage({
                       <dd>{q.location}</dd>
                     </div>
                   )}
+                  {Object.entries(detailLabels).map(([key, label]) => {
+                    const v = q.details?.[key];
+                    return typeof v === "string" && v ? (
+                      <div key={key}>
+                        <dt className="text-fg-subtle">{label}</dt>
+                        <dd>{v}</dd>
+                      </div>
+                    ) : null;
+                  })}
                 </dl>
-                <p className="mt-4 whitespace-pre-wrap text-[15px] leading-relaxed">{q.message}</p>
+                {Array.isArray(q.details?.products) && q.details.products.length > 0 && (
+                  <div className="mt-4 overflow-x-auto rounded-xl border border-line">
+                    <table className="w-full text-left text-[14px]">
+                      <thead className="bg-surface text-[12px] uppercase tracking-wide text-fg-subtle">
+                        <tr>
+                          <th className="px-3 py-2 font-medium">Product</th>
+                          <th className="px-3 py-2 font-medium">Brand / model</th>
+                          <th className="px-3 py-2 text-right font-medium">Qty</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-line">
+                        {(q.details.products as QuoteProduct[]).map((p, i) => (
+                          <tr key={i}>
+                            <td className="px-3 py-2">{p.name}</td>
+                            <td className="px-3 py-2 text-fg-muted">{p.model || "—"}</td>
+                            <td className="whitespace-nowrap px-3 py-2 text-right">
+                              {p.qty} {p.unit}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {q.message && <p className="mt-4 whitespace-pre-wrap text-[15px] leading-relaxed">{q.message}</p>}
               </li>
             ))}
           </ul>
