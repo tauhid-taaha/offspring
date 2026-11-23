@@ -28,8 +28,8 @@ const homeCards = {
   sections: {
     software: {
       eyebrow: "Popular solutions",
-      title: "Software people in Bangladesh ask us for most.",
-      subtitle: "Each one is customised to your institution or business — not a one-size-fits-all template.",
+      title: "Software for businesses, institutions and modern operations.",
+      subtitle: "From management systems and business ERPs to AI-powered applications, websites and mobile apps, we develop software around your requirements and workflows.",
       division: "digital",
       label: "Software & IT",
     },

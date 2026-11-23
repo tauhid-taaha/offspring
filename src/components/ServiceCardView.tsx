@@ -44,7 +44,8 @@ export function ServiceCardView({
               className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
             />
           )}
-          <span className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl bg-canvas/90 text-signal shadow-sm backdrop-blur">
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/50 to-transparent" />
+          <span className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/60 bg-white/70 text-signal shadow-[0_6px_18px_-8px_rgb(2_40_58/0.4)] backdrop-blur-md">
             <Icon name={card.icon} className="h-5 w-5" />
           </span>
         </div>
@@ -52,7 +53,7 @@ export function ServiceCardView({
 
       <div className={clsx("flex flex-1 flex-col", card.imageUrl ? "p-6" : "p-7")}>
         {!card.imageUrl && (
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-signal text-white shadow-[0_10px_24px_-10px_rgb(0_119_95/0.8)]">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(140deg,var(--color-pulse),var(--color-signal)_60%)] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_10px_24px_-10px_rgb(0_119_95/0.8)] transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105">
             <Icon name={card.icon} className="h-6 w-6" />
           </span>
         )}
@@ -62,7 +63,7 @@ export function ServiceCardView({
         {card.tags.length > 0 && (
           <ul className="mt-auto flex flex-wrap gap-1.5 pt-6">
             {card.tags.map((tag) => (
-              <li key={tag} className="rounded-full bg-surface px-2.5 py-1 text-[12px] text-fg/75 ring-1 ring-line">
+              <li key={tag} className="rounded-full bg-white/55 px-2.5 py-1 text-[12px] text-fg/75 ring-1 ring-fg/[0.07] backdrop-blur-sm">
                 {tag}
               </li>
             ))}
@@ -79,8 +80,8 @@ export function ServiceCardView({
   );
 
   const cls = clsx(
-    "card-surface group flex h-full flex-col overflow-hidden rounded-3xl transition-all duration-300",
-    href && "hover:-translate-y-1 hover:shadow-[0_24px_50px_-24px_rgb(0_119_95/0.35)]",
+    "glass-card group flex h-full flex-col overflow-hidden rounded-3xl transition-[transform,box-shadow] duration-500 ease-out",
+    href && "hover:-translate-y-1.5 hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.95),0_30px_60px_-28px_rgb(0_119_95/0.45)]",
     className,
   );
 

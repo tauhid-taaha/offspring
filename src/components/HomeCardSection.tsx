@@ -49,7 +49,13 @@ export function HomeCardSection({
             </Link>
           </Reveal>
         </div>
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative mt-14">
+          <div aria-hidden="true" className="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 overflow-hidden">
+            <div className="absolute -left-16 top-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.38),transparent)] blur-2xl" />
+            <div className="absolute left-[38%] top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.26),transparent)] blur-3xl" />
+            <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(255_178_30/0.4),transparent)] blur-2xl" />
+          </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((c, i) => {
             const target = !c.link ? main : c.link.startsWith("/") ? href(locale, c.link) : c.link;
             return (
@@ -58,6 +64,7 @@ export function HomeCardSection({
               </Reveal>
             );
           })}
+        </div>
         </div>
       </Container>
     </section>

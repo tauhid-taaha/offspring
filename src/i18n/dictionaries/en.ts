@@ -13,7 +13,7 @@ const en = {
   meta: {
     title: "Offspring Technologies — Building solutions for a connected world",
     description:
-      "Government-licensed technology company in Bangladesh. School & college software, ERP, websites and apps for clients worldwide — plus machinery supply and installation across Bangladesh.",
+      "Government-licensed technology company in Bangladesh. Software, websites and apps for clients worldwide —  Machinery supply and installation across Bangladesh.",
   },
   nav: {
     solutions: "Solutions",
@@ -25,12 +25,14 @@ const en = {
     learnMore: "Learn more",
     viewAll: "View all",
     seeDetails: "See details",
+    skipToContent: "Skip to content",
   },
   hero: {
     eyebrow: "Software · Equipment · Engineering",
-    title: "Building solutions for a connected world.",
+    title: "Your partner in Software, Supply and Engineering.",
     subtitle:
-      "We build school & college software, ERPs, websites and apps for clients anywhere in the world — and supply and install machines and equipment across Bangladesh.",
+    "We develop AI-powered software, ERP systems, websites and mobile applications. We also supply IT products, networking equipment, industrial machinery and heavy equipment, alongside installation, civil works and engineering services across Bangladesh.",
+
     primary: "Get a free quote",
     secondary: "Explore solutions",
   },
@@ -86,7 +88,7 @@ const en = {
   ],
   pillarsIntro: {
     eyebrow: "What we do",
-    title: "Three divisions. One accountable team.",
+    title: "Three Core Areas of Business",
     subtitle:
       "Software, equipment and installation usually mean three vendors and three excuses. With us it's one contract, one point of contact and one team responsible for the result.",
   },
@@ -137,71 +139,50 @@ const en = {
       ],
     },
   ],
-  reach: {
-    eyebrow: "Where we work",
-    title: "Built in Bangladesh. Delivered to the world.",
-    items: [
-      {
-        id: "software",
-        icon: "globe",
-        tag: "Worldwide",
-        title: "Software & IT services",
-        text: "We work remotely with clients in any country — clear scope, regular demos, and communication on WhatsApp, email or video call.",
-        points: ["Websites, apps & custom software", "Pricing in USD or BDT", "Overlapping hours with Asia, Middle East & Europe"],
-      },
-      {
-        id: "supply",
-        icon: "shield",
-        tag: "Bangladesh",
-        title: "Licensed machinery supplier",
-        text: "As a Government-licensed supplier, we source machinery and equipment for factories, schools, hospitals and offices across Bangladesh.",
-        points: ["Quotation in BDT", "Genuine, branded equipment", "Delivered to your site"],
-      },
-      {
-        id: "install",
-        icon: "wrench",
-        tag: "Bangladesh",
-        title: "Installation & civil works",
-        text: "Our on-site teams install the machines and handle the electrical and civil works around them — then stay for training and support.",
-        points: ["Machine & equipment installation", "Electrical & civil works", "Training, AMC & after-sales"],
-      },
-    ],
-  },
-  products: {
-    eyebrow: "Popular solutions",
-    title: "Software people in Bangladesh ask us for most.",
-    subtitle: "Each one is customised to your institution or business — not a one-size-fits-all template.",
-    items: [
-      {
-        icon: "school",
-        id: "school-college",
-        title: "School & College Management",
-        text: "Admission, attendance, exams & results, fees and guardian SMS — in one system.",
-        tags: ["Online admission", "Result cards", "Fee collection", "Guardian SMS"],
-      },
-      {
-        icon: "chart",
-        id: "erp",
-        title: "Business & Factory ERP",
-        text: "Inventory, sales, purchase, accounts, HR and payroll — with reports you can trust.",
-        tags: ["Inventory", "Accounts", "HR & payroll", "POS"],
-      },
-      {
-        icon: "globe",
-        id: "websites",
-        title: "Websites & Portfolios",
-        text: "Fast, mobile-friendly websites for companies, institutions and professionals.",
-        tags: ["Company sites", "Personal portfolios", "E-commerce", "Bangla/English"],
-      },
-      {
-        icon: "phone",
-        id: "mobile",
-        title: "Mobile Apps",
-        text: "Android and iOS apps for customers, students, staff and field teams.",
-        tags: ["Android", "iOS", "Admin panel", "Push notifications"],
-      },
-    ],
-  },
+  
+reach: {
+  eyebrow: "OUR OPERATING REACH",
+  title: "Serving clients in Bangladesh and beyond.",
+  items: [
+    {
+      id: "software",
+      icon: "globe",
+      tag: "Worldwide",
+      title: "Software & IT Services",
+      text: "We develop software for businesses and institutions locally and internationally, with remote project delivery and ongoing support.",
+      points: [
+        "AI solutions, ERP, websites & mobile apps",
+        "Custom software and system integration",
+        "Remote development and technical support"
+      ],
+    },
+    {
+      id: "supply",
+      icon: "shield",
+      tag: "Bangladesh",
+      title: "Machinery & Equipment Supply",
+      text: "We source and supply IT products, industrial machinery and equipment for businesses and institutions across Bangladesh.",
+      points: [
+        "IT and office equipment",
+        "Industrial and heavy machinery",
+        "Procurement and nationwide delivery"
+      ],
+    },
+    {
+      id: "install",
+      icon: "wrench",
+      tag: "Bangladesh",
+      title: "Installation & Engineering",
+      text: "We undertake equipment installation, electrical works, civil construction and related engineering projects.",
+      points: [
+        "Machinery installation & commissioning",
+        "Electrical and civil works",
+        "Site preparation and technical support"
+      ],
+    },
+  ],
+},
+
   principles: {
     eyebrow: "Why choose us",
     title: "New company. Serious standards.",
@@ -413,6 +394,11 @@ const en = {
       hours: "Sat – Thu, 10:00 – 19:00 (GMT+6)",
       whatsapp: "Chat on WhatsApp",
     },
+  },
+  notFound: {
+    code: "404",
+    title: "Page not found",
+    back: "Back to home",
   },
   footer: {
     tagline: "Building solutions for a connected world.",
