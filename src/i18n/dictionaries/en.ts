@@ -305,6 +305,8 @@ reach: {
       sending: "Sending…",
       successTitle: "Thank you — message received.",
       successBody: "We'll get back to you within one working day.",
+      emailInvalid: "Enter a valid email address, like name@gmail.com.",
+      phoneInvalid: "Enter a valid phone number with the country code, like +8801712345678.",
       error: "We couldn't send that just now. Please try again, or reach us on WhatsApp.",
       reset: "Send another",
       required: "Required",
@@ -349,7 +351,7 @@ reach: {
         website: "Current website (optional)",
         websitePlaceholder: "https://",
         message: "Describe the project",
-        messagePlaceholder: "What should it do, who will use it, and anything you already have (design, content, old system).",
+        messagePlaceholder: "What should it do, and who will use it?",
       },
       supply: {
         products: "Products",

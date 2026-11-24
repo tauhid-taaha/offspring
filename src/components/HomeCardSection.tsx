@@ -36,7 +36,7 @@ export function HomeCardSection({
 
   return (
     <section id={id} className={clsx("relative isolate scroll-mt-16 py-24 sm:py-32", tinted && "border-y border-line bg-surface")}>
-      <SectionBg slot={`home/bg-${id}`} />
+      <SectionBg slot={`home/bg-${id === "software" ? "solutions" : id}`} />
       <Container>
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <Reveal>
