@@ -80,8 +80,8 @@ export function Backdrop({
       <div className="absolute inset-0 bg-[linear-gradient(165deg,#e7f6ee_0%,#f7fbf8_42%,#ffffff_78%)]" />
       <div className="absolute inset-0 bg-[repeating-radial-gradient(circle_at_78%_42%,transparent_0,transparent_26px,rgb(0_119_95/0.075)_27px,transparent_28px)] [mask-image:radial-gradient(circle_at_78%_42%,#000_12%,transparent_68%)]" />
       <div className="bg-grid absolute inset-0 opacity-70 [mask-image:radial-gradient(ellipse_50%_80%_at_0%_0%,#000_25%,transparent_75%)]" />
-      <div className="absolute -left-24 top-8 h-[420px] w-[560px] rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.16),transparent)] blur-3xl" />
-      <div className="absolute -right-10 bottom-0 h-[280px] w-[420px] rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.10),transparent)] blur-3xl" />
+      <div className="absolute -left-24 top-8 h-[420px] w-[560px] rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.16),transparent)]" />
+      <div className="absolute -right-10 bottom-0 h-[280px] w-[420px] rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.10),transparent)]" />
     </div>
   );
 }
@@ -116,7 +116,7 @@ function Ambient({ tone, slot }: { tone: "light" | "dark"; slot: string }) {
         }}
       />
       <div
-        className="absolute h-[340px] w-[480px] rounded-full blur-3xl"
+        className="absolute h-[340px] w-[480px] rounded-full"
         style={{
           background: "radial-gradient(closest-side, rgb(0 119 95 / 0.11), transparent)",
           ...(fromRight ? { right: "-3rem", top: "-4rem" } : { left: "-4rem", bottom: "-3rem" }),

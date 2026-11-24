@@ -56,9 +56,9 @@ export function ButtonLink({ variant = "primary", className, children, ...props 
         variant === "primary" &&
           "bg-accent text-ink font-semibold shadow-[0_8px_24px_-10px_rgb(245_158_11/0.7)] hover:bg-accent-strong",
         variant === "secondary" &&
-          "border border-line-strong bg-canvas/70 text-fg backdrop-blur hover:border-fg/25 hover:bg-fg/[0.04]",
+          "border border-line-strong bg-canvas/90 text-fg hover:border-fg/25 hover:bg-fg/[0.04]",
         variant === "onDarkPrimary" && "bg-accent font-semibold text-ink hover:bg-accent-strong",
-        variant === "onDarkSecondary" && "border border-white/20 bg-white/5 text-white backdrop-blur hover:bg-white/10",
+        variant === "onDarkSecondary" && "border border-white/25 bg-white/10 text-white hover:bg-white/15",
         className,
       )}
     >
@@ -194,6 +194,25 @@ const icons: Record<string, ReactNode> = {
   ),
   building: <path d="M4 21V5l8-2v18M12 8l8 2v11M3 21h18M7 8h2M7 12h2M7 16h2M15 13h2M15 17h2" />,
   wrench: <path d="M15 4a5 5 0 0 0-4.6 6.9L4 17.3V20h2.7l6.4-6.4A5 5 0 0 0 20 9l-3 1-2-2 1-3z" />,
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3.5 6.5l8.5 6.5 8.5-6.5" />
+    </>
+  ),
+  call: <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />,
+  whatsapp: (
+    <>
+      <path d="M4 20l1.3-4.3A8 8 0 1 1 8.5 19z" />
+      <path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
 };
 
 export function Icon({ name, className }: { name: string; className?: string }) {

@@ -4,7 +4,6 @@ import { company } from "@/config/company";
 import { PageHero } from "@/components/PageHero";
 import { SectionBg } from "@/components/Media";
 import { Reveal } from "@/components/Reveal";
-import { CtaBand } from "@/components/CtaBand";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
@@ -139,7 +138,6 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      <CtaBand locale={locale} t={t.cta} />
     </>
   );
 }

@@ -30,6 +30,7 @@ export function SiteChrome({ locale, children }: { locale: Locale; children: Rea
       <Footer locale={locale} dict={dict} />
       <ChatButton
         whatsapp={company.whatsapp}
+        message={dict.contact.details.whatsappMessage}
         contactHref={href(locale, "/contact")}
         label={company.whatsapp ? dict.contact.details.whatsapp : dict.nav.contact}
       />

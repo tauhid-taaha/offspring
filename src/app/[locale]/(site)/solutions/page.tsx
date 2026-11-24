@@ -4,7 +4,6 @@ import { ButtonLink, Container, Eyebrow, Icon } from "@/components/ui";
 import { PageHero } from "@/components/PageHero";
 import { SectionBg } from "@/components/Media";
 import { Reveal } from "@/components/Reveal";
-import { CtaBand } from "@/components/CtaBand";
 import { href, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
@@ -76,9 +75,6 @@ export default async function SolutionsPage({ params }: Props) {
         </section>
       ))}
 
-      <div className="pt-24 sm:pt-32">
-        <CtaBand locale={locale} t={t.cta} />
-      </div>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container, Eyebrow } from "@/components/ui";
+import { ContactDetails } from "@/components/ContactDetails";
 import { Backdrop } from "@/components/Media";
 import { RouteMap } from "@/components/RouteMap";
 import { QuoteForm } from "@/components/QuoteForm";
@@ -23,12 +24,6 @@ export default async function ContactPage({ params }: Props) {
   const d = c.details;
 
   const cover = findSlot("contact/cover");
-  const rows = [
-    { label: d.emailLabel, value: d.email },
-    { label: d.phoneLabel, value: d.phone },
-    { label: d.officeLabel, value: d.office },
-    { label: d.hoursLabel, value: d.hours },
-  ];
 
   return (
     <>
@@ -48,17 +43,7 @@ export default async function ContactPage({ params }: Props) {
             <QuoteForm t={c.form} q={c.quote} catalog={buildQuoteCatalog(dict)} />
           </Reveal>
           <Reveal delay={120}>
-            <aside id="details" className="scroll-mt-28">
-              <h2 className="font-mono text-[12px] uppercase tracking-[0.18em] text-fg-subtle">{d.title}</h2>
-              <dl className="mt-4 grid gap-4">
-                {rows.map((r) => (
-                  <div key={r.label}>
-                    <dt className="text-[13px] text-fg-subtle">{r.label}</dt>
-                    <dd className="mt-1 text-lg font-medium tracking-tight">{r.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </aside>
+            <ContactDetails d={d} />
           </Reveal>
           </div>
         </Container>
@@ -66,3 +51,4 @@ export default async function ContactPage({ params }: Props) {
     </>
   );
 }
+

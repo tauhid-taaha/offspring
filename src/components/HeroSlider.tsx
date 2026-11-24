@@ -71,9 +71,9 @@ export function HeroSlider({
         <AnimatePresence mode="wait" initial={false}>
           <m.span
             key={s.id}
-            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
             className="inline-flex items-center gap-2 rounded-full bg-signal-soft px-3 py-1.5 text-[13px] font-semibold text-signal"
           >
@@ -219,7 +219,7 @@ function Stat({ value, label, on, delay }: { value: string; label: string; on: b
     <m.div
       className="flex flex-col items-center justify-center px-2 text-center"
       initial={false}
-      animate={on ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 14, filter: "blur(6px)" }}
+      animate={on ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: on ? delay / 1000 : 0 }}
     >
       <span className="text-xl font-semibold tracking-tight text-fg sm:text-3xl">{value}</span>

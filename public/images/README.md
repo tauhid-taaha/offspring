@@ -37,6 +37,7 @@ Text stays readable automatically:
 | `card-install.jpg` | "Where we work" · card 3, Installation & civil works (white) | 1200 × 1400 |
 | `bg-supply.jpg` | Background of the "Machines and equipment we supply" section | 2400 × 1400 |
 | `bg-install.jpg` | Background of the "Installation & consultancy" section | 2400 × 1400 |
+| `bg-quote.jpg` | Background of the "Get a free quote" form section at the bottom | 2400 × 1400 |
 | `bg-faq.jpg` | Background of the FAQ section | 2400 × 1400 |
 
 ## 2. Software & IT page → `public/images/divisions/digital/`
@@ -90,7 +91,7 @@ Text stays readable automatically:
 | `solar-install.jpg` | Card: Solar Installation | 1600 × 900 |
 | `network-cctv.jpg` | Card: Networking & CCTV | 1600 × 900 |
 | `ac-ventilation.jpg` | Card: AC & Ventilation | 1600 × 900 |
-| `lab-setup.jpg` | Card: ICT Lab & Smart Classroom Setup | 1600 × 900 |
+| `consultancy.jpg` | Card: Technical Consultancy | 1600 × 900 |
 | `civil.jpg` | Card: Civil Works | 1600 × 900 |
 
 ## 5. Solutions overview page → `public/images/solutions/`
@@ -120,12 +121,6 @@ Text stays readable automatically:
 |---|---|---|
 | `cover.jpg` | Front cover of the page | 2400 × 1400 |
 | `bg-form.jpg` | Background behind the contact form | 2400 × 1400 |
-
-## 8. All pages → `public/images/shared/`
-
-| File name | Where it appears | Size (px) |
-|---|---|---|
-| `bg-cta.jpg` | Background of the dark "Tell us what you need" box at the bottom of every page | 2400 × 1000 |
 
 ---
 

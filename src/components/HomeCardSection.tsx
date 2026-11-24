@@ -51,9 +51,9 @@ export function HomeCardSection({
         </div>
         <div className="relative mt-14">
           <div aria-hidden="true" className="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 overflow-hidden">
-            <div className="absolute -left-16 top-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.38),transparent)] blur-2xl" />
-            <div className="absolute left-[38%] top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.26),transparent)] blur-3xl" />
-            <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(255_178_30/0.4),transparent)] blur-2xl" />
+            <div className="absolute -left-16 top-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.38),transparent)]" />
+            <div className="absolute left-[38%] top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgb(0_119_95/0.26),transparent)]" />
+            <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(255_178_30/0.4),transparent)]" />
           </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((c, i) => {

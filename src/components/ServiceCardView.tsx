@@ -45,7 +45,7 @@ export function ServiceCardView({
             />
           )}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/50 to-transparent" />
-          <span className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/60 bg-white/70 text-signal shadow-[0_6px_18px_-8px_rgb(2_40_58/0.4)] backdrop-blur-md">
+          <span className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/60 bg-white/90 text-signal shadow-[0_6px_18px_-8px_rgb(2_40_58/0.4)]">
             <Icon name={card.icon} className="h-5 w-5" />
           </span>
         </div>
@@ -63,7 +63,7 @@ export function ServiceCardView({
         {card.tags.length > 0 && (
           <ul className="mt-auto flex flex-wrap gap-1.5 pt-6">
             {card.tags.map((tag) => (
-              <li key={tag} className="rounded-full bg-white/55 px-2.5 py-1 text-[12px] text-fg/75 ring-1 ring-fg/[0.07] backdrop-blur-sm">
+              <li key={tag} className="rounded-full bg-white/70 px-2.5 py-1 text-[12px] text-fg/75 ring-1 ring-fg/[0.07]">
                 {tag}
               </li>
             ))}

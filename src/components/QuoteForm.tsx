@@ -122,8 +122,8 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
       {status === "sent" ? (
         <m.div
           key="sent"
-          initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease }}
           className="card-surface flex min-h-[420px] flex-col items-start justify-center rounded-3xl p-8 sm:p-10"
           role="status"
@@ -164,7 +164,7 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
       ) : (
         <m.form
           key="form"
-          exit={{ opacity: 0, scale: 0.98, filter: "blur(6px)", transition: { duration: 0.25 } }}
+          exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.25 } }}
           onSubmit={onSubmit}
           noValidate
           className="card-surface grid gap-8 rounded-3xl p-5 sm:p-7"
@@ -332,9 +332,9 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
                     <AnimatePresence mode="wait" initial={false}>
                       <m.div
                         key={current.id}
-                        initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: -8, filter: "blur(4px)", transition: { duration: 0.15 } }}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8, transition: { duration: 0.15 } }}
                         transition={{ duration: 0.35, ease }}
                       >
                         {current.id === "software" && (

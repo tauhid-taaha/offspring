@@ -1,11 +1,8 @@
-"use client";
-
 import { Fragment } from "react";
-import { m } from "motion/react";
-import { ease } from "./MotionProvider";
 
 /**
- * Headline that rises in word by word with a short blur-to-sharp.
+ * Headline that rises in word by word.
+ * CSS-only (no JavaScript needed), so it starts the moment the page paints.
  * The full sentence stays in the DOM for screen readers and search engines.
  */
 export function SplitWords({
@@ -18,6 +15,7 @@ export function SplitWords({
   /** How many trailing words get `highlightClass`. */
   highlight?: number;
   highlightClass?: string;
+  /** seconds */
   delay?: number;
 }) {
   const words = text.split(" ");
@@ -27,18 +25,16 @@ export function SplitWords({
       <span aria-hidden="true">
         {words.map((w, i) => (
           <Fragment key={i}>
-          <span className="inline-block overflow-hidden pb-[0.08em] align-bottom">
-            <m.span
-              className={`inline-block ${i >= words.length - highlight ? highlightClass ?? "" : ""}`}
-              initial={{ y: "70%", opacity: 0, filter: "blur(8px)" }}
-              animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.55, ease, delay: delay + i * 0.045 }}
-            >
-              {w}
-            </m.span>
-          </span>
-          {/* the space sits outside the clipped word so it isn't collapsed */}
-          {i < words.length - 1 && " "}
+            <span className="inline-block overflow-hidden pb-[0.08em] align-bottom">
+              <span
+                className={`word-rise inline-block ${i >= words.length - highlight ? highlightClass ?? "" : ""}`}
+                style={{ animationDelay: `${Math.round((delay + i * 0.045) * 1000)}ms` }}
+              >
+                {w}
+              </span>
+            </span>
+            {/* the space sits outside the clipped word so it isn't collapsed */}
+            {i < words.length - 1 && " "}
           </Fragment>
         ))}
       </span>

@@ -73,16 +73,16 @@ export function Header({
         className={clsx(
           "border-b transition-[background-color,border-color,backdrop-filter] duration-300",
           scrolled || open
-            ? "border-line/70 bg-canvas/75 backdrop-blur-xl backdrop-saturate-150"
+            ? "border-line/70 bg-canvas/85 backdrop-blur-md"
             : "border-transparent bg-transparent",
         )}
       >
-      <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-5 sm:px-8">
+      <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-5 sm:px-8 md:h-[76px]">
         <Link href={href(locale)} aria-label="Offspring Technologies — home">
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary" onMouseLeave={() => setHovered(null)}>
+        <nav className="hidden items-center gap-1.5 md:flex" aria-label="Primary" onMouseLeave={() => setHovered(null)}>
           {links.map((l) => {
             const active = l.children ? pathname.startsWith(l.to) : pathname === l.to;
             const isOpen = menu === l.to;
@@ -92,8 +92,8 @@ export function Header({
                 onMouseEnter={() => setHovered(l.to)}
                 onFocus={() => setHovered(l.to)}
                 className={clsx(
-                  "relative isolate inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] transition-colors",
-                  active ? "text-fg" : "text-fg-muted hover:text-fg",
+                  "relative isolate inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[16px] font-medium tracking-[-0.01em] transition-colors",
+                  active ? "text-signal" : "text-fg/85 hover:text-fg",
                 )}
               >
                 {hovered === l.to && (
@@ -106,13 +106,13 @@ export function Header({
                 {active && (
                   <m.span
                     layoutId="nav-active"
-                    className="absolute inset-x-3.5 -bottom-px h-[2px] rounded-full bg-signal"
+                    className="absolute inset-x-4 -bottom-0.5 h-[2.5px] rounded-full bg-signal"
                     transition={{ type: "spring", stiffness: 500, damping: 38 }}
                   />
                 )}
                 {l.label}
                 {l.children && (
-                  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className={clsx("transition-transform duration-300", isOpen && "rotate-180")}>
+                  <svg width="12" height="12" viewBox="0 0 10 10" aria-hidden="true" className={clsx("transition-transform duration-300", isOpen && "rotate-180")}>
                     <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" />
                   </svg>
                 )}
@@ -137,13 +137,13 @@ export function Header({
                   {isOpen && (
                     <m.div
                       className="absolute left-1/2 top-full w-[460px] max-w-[calc(100vw-2rem)] pt-3"
-                      initial={{ opacity: 0, x: "-50%", y: 8, scale: 0.97, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, x: "-50%", y: 0, scale: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, x: "-50%", y: 6, scale: 0.98, filter: "blur(4px)", transition: { duration: 0.15 } }}
+                      initial={{ opacity: 0, x: "-50%", y: 8, scale: 0.97 }}
+                      animate={{ opacity: 1, x: "-50%", y: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: "-50%", y: 6, scale: 0.98, transition: { duration: 0.15 } }}
                       transition={{ type: "spring", stiffness: 420, damping: 32 }}
                       style={{ originY: 0 }}
                     >
-                      <div className="grid gap-1 rounded-2xl border border-line bg-canvas/95 p-2 shadow-[0_24px_60px_-20px_rgb(10_13_20/0.25)] backdrop-blur-xl">
+                      <div className="grid gap-1 rounded-2xl border border-line bg-canvas p-2 shadow-[0_24px_60px_-20px_rgb(10_13_20/0.25)]">
                         {l.children.map((d, di) => (
                           <m.div
                             key={d.id}
@@ -159,7 +159,7 @@ export function Header({
                           <Icon name={d.icon} />
                         </span>
                         <span>
-                          <span className="block text-[14px] font-medium text-fg">{d.title}</span>
+                          <span className="block text-[15px] font-semibold text-fg">{d.title}</span>
                           <span className="mt-0.5 block text-[13px] leading-snug text-fg-muted">{d.description}</span>
                         </span>
                       </Link>
@@ -184,7 +184,7 @@ export function Header({
         <div className="flex items-center gap-2">
           <Link
             href={href(locale, "/contact")}
-            className="group hidden h-9 items-center gap-1.5 rounded-full bg-accent px-4 text-[14px] font-semibold text-ink transition-all hover:bg-accent-strong hover:shadow-[0_8px_24px_-8px_rgb(245_158_11/0.8)] active:scale-[0.97] md:inline-flex"
+            className="group hidden h-11 items-center gap-2 rounded-full bg-accent px-5 text-[15px] font-semibold text-ink transition-all hover:bg-accent-strong hover:shadow-[0_8px_24px_-8px_rgb(245_158_11/0.8)] active:scale-[0.97] md:inline-flex"
           >
             {nav.cta}
             <Arrow />

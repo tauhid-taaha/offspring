@@ -5,7 +5,9 @@ import { RouteMap } from "@/components/RouteMap";
 import { DivisionTabs } from "@/components/DivisionTabs";
 import { Faq } from "@/components/Faq";
 import { Reveal } from "@/components/Reveal";
-import { CtaBand } from "@/components/CtaBand";
+import { QuoteForm } from "@/components/QuoteForm";
+import { ContactDetails } from "@/components/ContactDetails";
+import { buildQuoteCatalog } from "@/lib/quote-catalog";
 import { href, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { findSlot } from "@/lib/images";
@@ -234,7 +236,23 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </Container>
       </section>
 
-      <CtaBand locale={locale} t={t.cta} />
+      {/* ───────── Get a quote (same form as the Contact page) ───────── */}
+      <section id="quote" className="relative isolate scroll-mt-20 border-t border-line bg-surface py-24 sm:py-32">
+        <SectionBg slot="home/bg-quote" />
+        <Container>
+          <Reveal>
+            <SectionHeading eyebrow={t.nav.cta} title={t.contact.title} subtitle={t.contact.subtitle} />
+          </Reveal>
+          <div className="mt-12 grid items-start gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-12">
+            <Reveal>
+              <QuoteForm t={t.contact.form} q={t.contact.quote} catalog={buildQuoteCatalog(t)} />
+            </Reveal>
+            <Reveal delay={120}>
+              <ContactDetails d={t.contact.details} id="home-details" />
+            </Reveal>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

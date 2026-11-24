@@ -54,8 +54,8 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
                   className="overflow-hidden"
                 >
                   <m.p
-                    initial={{ y: -6, filter: "blur(4px)" }}
-                    animate={{ y: 0, filter: "blur(0px)" }}
+                    initial={{ y: -6 }}
+                    animate={{ y: 0 }}
                     transition={{ duration: 0.35, ease }}
                     className="-mt-1 max-w-3xl pb-6 leading-relaxed text-fg-muted"
                   >
@@ -72,8 +72,18 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
 }
 
 /** Floating chat button: pops in after the page settles, gentle pulse ring, label slides out on hover. */
-export function ChatButton({ whatsapp, contactHref, label }: { whatsapp: string; contactHref: string; label: string }) {
-  const href = whatsapp ? `https://wa.me/${whatsapp}` : contactHref;
+export function ChatButton({
+  whatsapp,
+  message,
+  contactHref,
+  label,
+}: {
+  whatsapp: string;
+  message?: string;
+  contactHref: string;
+  label: string;
+}) {
+  const href = whatsapp ? `https://wa.me/${whatsapp}${message ? `?text=${encodeURIComponent(message)}` : ""}` : contactHref;
   return (
     <m.a
       href={href}
@@ -88,7 +98,7 @@ export function ChatButton({ whatsapp, contactHref, label }: { whatsapp: string;
       className="group fixed bottom-5 right-5 z-40 flex h-14 items-center gap-2 rounded-full bg-pulse pl-4 pr-4 text-white shadow-[0_16px_40px_-12px_rgb(31_168_90/0.7)] transition-[padding] hover:pr-5 sm:bottom-7 sm:right-7"
     >
       <span aria-hidden="true" className="absolute inset-0 -z-10 animate-ping rounded-full bg-pulse/40 [animation-duration:2.6s]" />
-      <Icon name="chat" className="h-6 w-6" />
+      <Icon name={whatsapp ? "whatsapp" : "chat"} className="h-6 w-6" />
       <span className="max-w-0 overflow-hidden whitespace-nowrap text-[14px] font-semibold transition-all duration-300 group-hover:max-w-[160px]">
         {label}
       </span>

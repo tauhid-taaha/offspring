@@ -7,7 +7,6 @@ import { Backdrop, ImageSlot, SectionBg } from "@/components/Media";
 import { HeroPanel } from "@/components/HeroSlider";
 import { RouteMap } from "@/components/RouteMap";
 import { Reveal } from "@/components/Reveal";
-import { CtaBand } from "@/components/CtaBand";
 import { href, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { divisionIds, type DivisionId } from "@/i18n/dictionaries/en-divisions";
@@ -348,7 +347,6 @@ export default async function DivisionPage({ params }: Props) {
         </Container>
       </section>
 
-      <CtaBand locale={locale} t={t.cta} />
     </>
   );
 }
