@@ -3,20 +3,38 @@
 import { useId, useState } from "react";
 import clsx from "clsx";
 import { AnimatePresence, m } from "motion/react";
-import { Icon } from "./ui";
 import { ease } from "./motion/MotionProvider";
 
-/** FAQ accordion: one answer open at a time, with a smooth height animation. */
+/**
+ * FAQ accordion: numbered glass rows, one open at a time (the first starts open).
+ * The open row lifts to white with a green edge; answers slide open smoothly.
+ */
 export function Faq({ items }: { items: { q: string; a: string }[] }) {
   const uid = useId();
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <div className="divide-y divide-line rounded-3xl border border-line bg-canvas">
+    <ol className="grid gap-3">
       {items.map((it, i) => {
         const on = open === i;
         return (
-          <div key={it.q} className="px-6 sm:px-8">
+          <li
+            key={it.q}
+            className={clsx(
+              "relative overflow-hidden rounded-2xl transition-[background-color,box-shadow] duration-300",
+              on
+                ? "bg-white shadow-[inset_0_1px_0_white,0_0_0_1px_rgb(0_119_95/0.25),0_24px_48px_-28px_rgb(0_119_95/0.45)]"
+                : "glass-tile hover:bg-white/80",
+            )}
+          >
+            {/* Green edge on the open item */}
+            <span
+              aria-hidden="true"
+              className={clsx(
+                "absolute inset-y-3 left-0 w-1 origin-center rounded-r-full bg-[linear-gradient(180deg,var(--color-pulse),var(--color-signal))] transition-transform duration-300",
+                on ? "scale-y-100" : "scale-y-0",
+              )}
+            />
             <h3>
               <button
                 type="button"
@@ -24,19 +42,34 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
                 aria-expanded={on}
                 aria-controls={`${uid}-a${i}`}
                 onClick={() => setOpen(on ? null : i)}
-                className="group flex w-full items-center justify-between gap-6 py-6 text-left text-[17px] font-medium tracking-tight"
+                className="group flex w-full items-center gap-4 px-5 py-5 text-left sm:gap-5 sm:px-6"
               >
-                <span className={clsx("transition-colors", on ? "text-signal" : "group-hover:text-signal")}>{it.q}</span>
+                <span
+                  className={clsx(
+                    "font-mono text-[13px] font-medium tabular-nums transition-colors",
+                    on ? "text-signal" : "text-fg-subtle group-hover:text-signal",
+                  )}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className={clsx(
+                    "flex-1 text-[16px] font-semibold tracking-[-0.01em] transition-colors sm:text-[17px]",
+                    on ? "text-fg" : "text-fg/85 group-hover:text-fg",
+                  )}
+                >
+                  {it.q}
+                </span>
                 <m.span
                   animate={{ rotate: on ? 45 : 0 }}
                   transition={{ type: "spring", stiffness: 400, damping: 24 }}
                   className={clsx(
-                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors",
-                    on ? "border-signal bg-signal text-white" : "border-line-strong text-fg-muted group-hover:border-signal",
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+                    on ? "bg-signal text-white" : "bg-white text-fg-muted ring-1 ring-black/[0.08] group-hover:text-signal group-hover:ring-signal/40",
                   )}
                 >
                   <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                    <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
                   </svg>
                 </m.span>
               </button>
@@ -53,55 +86,13 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
                   transition={{ duration: 0.35, ease }}
                   className="overflow-hidden"
                 >
-                  <m.p
-                    initial={{ y: -6 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.35, ease }}
-                    className="-mt-1 max-w-3xl pb-6 leading-relaxed text-fg-muted"
-                  >
-                    {it.a}
-                  </m.p>
+                  <p className="pb-6 pl-[3.25rem] pr-6 leading-relaxed text-fg-muted sm:pl-[3.75rem] sm:pr-16">{it.a}</p>
                 </m.div>
               )}
             </AnimatePresence>
-          </div>
+          </li>
         );
       })}
-    </div>
-  );
-}
-
-/** Floating chat button: pops in after the page settles, gentle pulse ring, label slides out on hover. */
-export function ChatButton({
-  whatsapp,
-  message,
-  contactHref,
-  label,
-}: {
-  whatsapp: string;
-  message?: string;
-  contactHref: string;
-  label: string;
-}) {
-  const href = whatsapp ? `https://wa.me/${whatsapp}${message ? `?text=${encodeURIComponent(message)}` : ""}` : contactHref;
-  return (
-    <m.a
-      href={href}
-      target={whatsapp ? "_blank" : undefined}
-      rel={whatsapp ? "noopener noreferrer" : undefined}
-      aria-label={label}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 260, damping: 18, delay: 1.2 }}
-      whileHover={{ y: -3 }}
-      whileTap={{ scale: 0.92 }}
-      className="group fixed bottom-5 right-5 z-40 flex h-14 items-center gap-2 rounded-full bg-pulse pl-4 pr-4 text-white shadow-[0_16px_40px_-12px_rgb(31_168_90/0.7)] transition-[padding] hover:pr-5 sm:bottom-7 sm:right-7"
-    >
-      <span aria-hidden="true" className="absolute inset-0 -z-10 animate-ping rounded-full bg-pulse/40 [animation-duration:2.6s]" />
-      <Icon name={whatsapp ? "whatsapp" : "chat"} className="h-6 w-6" />
-      <span className="max-w-0 overflow-hidden whitespace-nowrap text-[14px] font-semibold transition-all duration-300 group-hover:max-w-[160px]">
-        {label}
-      </span>
-    </m.a>
+    </ol>
   );
 }

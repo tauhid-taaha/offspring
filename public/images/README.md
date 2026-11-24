@@ -32,9 +32,6 @@ Text stays readable automatically:
 | `bg-divisions.jpg` | Background of "Three divisions" section | 2400 × 1400 |
 | `bg-solutions.jpg` | Background of "Popular solutions" section | 2400 × 1400 |
 | `bg-reach.jpg` | Background of "Where we work" section | 2400 × 1400 |
-| `card-software.jpg` | "Where we work" · card 1, Software & IT services (navy) | 1200 × 1400 |
-| `card-supply.jpg` | "Where we work" · card 2, Licensed machinery supplier (mint) | 1200 × 1400 |
-| `card-install.jpg` | "Where we work" · card 3, Installation & civil works (white) | 1200 × 1400 |
 | `bg-supply.jpg` | Background of the "Machines and equipment we supply" section | 2400 × 1400 |
 | `bg-install.jpg` | Background of the "Installation & consultancy" section | 2400 × 1400 |
 | `bg-quote.jpg` | Background of the "Get a free quote" form section at the bottom | 2400 × 1400 |

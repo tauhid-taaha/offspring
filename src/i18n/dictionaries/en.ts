@@ -19,6 +19,7 @@ const en = {
     solutions: "Solutions",
     about: "About",
     contact: "Contact",
+    faq: "FAQ",
     cta: "Get a free quote",
     menu: "Menu",
     close: "Close",
@@ -184,41 +185,44 @@ reach: {
 },
 
   principles: {
-    eyebrow: "Why choose us",
-    title: "New company. Serious standards.",
+    eyebrow: "Why work with us",
+    title: "What clients can expect.",
     items: [
       {
-        title: "Licensed & accountable",
-        description: "A Government-licensed Bangladeshi company with proper quotations, invoices and agreements.",
+        title: "One point of contact",
+        description: "Software, equipment and installation can be handled under a single contract, so you are not coordinating several vendors.",
       },
       {
-        title: "Clear pricing",
-        description: "Itemised quotes up front. No hidden charges added after the work starts.",
+        title: "Clear commercial terms",
+        description: "Fixed quotations with defined scope, timeline and payment milestones. Any change is quoted in writing before it is made.",
       },
       {
-        title: "You own what you pay for",
-        description: "Source code, domains and documentation are handed over to you — no lock-in.",
+        title: "Full ownership",
+        description: "On completion you receive the source code, account access, documentation and warranty papers.",
       },
       {
-        title: "Support after delivery",
-        description: "Free support period on every project, with affordable maintenance plans after.",
+        title: "Support after handover",
+        description: "Every project includes a support period, with annual maintenance contracts available afterwards.",
       },
     ],
   },
   process: {
-    eyebrow: "How it works",
-    title: "From first call to long-term support.",
+    eyebrow: "Our process",
+    title: "How a project runs.",
     steps: [
-      { title: "Talk", description: "A free call or visit to understand what you need." },
-      { title: "Quote", description: "A written, itemised quotation and timeline." },
-      { title: "Build / Supply", description: "We develop the software or source the equipment." },
-      { title: "Deliver", description: "Launch, installation and training for your team." },
-      { title: "Support", description: "Fixes, updates and maintenance when you need them." },
+      { title: "Consultation", description: "An initial meeting or site visit to understand the requirement." },
+      { title: "Proposal", description: "Written scope, itemised quotation and delivery schedule." },
+      { title: "Execution", description: "Development, procurement or installation by our own team." },
+      { title: "Handover", description: "Testing, commissioning, documentation and user training." },
+      { title: "Support", description: "Maintenance, updates and service under the agreed terms." },
     ],
   },
   faq: {
     eyebrow: "FAQ",
     title: "Questions we hear often.",
+    subtitle: "Short answers about licensing, delivery, payments and support.",
+    helpTitle: "Still have a question?",
+    helpText: "Message us on WhatsApp or give us a call. We reply during office hours.",
     items: [
       {
         q: "Are you a registered company?",
@@ -247,26 +251,26 @@ reach: {
     ],
   },
   about: {
-    eyebrow: "About Offspring",
-    title: "One team for software, supply and engineering.",
+    eyebrow: "About us",
+    title: "Software, supply and engineering services from Dhaka.",
     intro:
-      "Offspring Technologies is a Government-licensed company based in Uttara, Dhaka. Our software team builds AI-powered applications, ERPs, websites and mobile apps for clients in Bangladesh and abroad. Our supply and field teams source IT products, machinery and heavy equipment — then install it, handle the civil and electrical works, and stay on for support.",
+      "Offspring Technologies is a trade-licensed company headquartered in Uttara, Dhaka. We work in three areas: software development for clients in Bangladesh and abroad; supply of IT products, machinery and heavy equipment; and installation, electrical and civil works across Bangladesh.",
     missionTitle: "Mission",
     mission:
-      "To give businesses, institutions and project owners technology and equipment that genuinely work — quoted honestly, delivered on time and supported after handover.",
+      "To deliver software, equipment and engineering services to the agreed specification, schedule and budget, with clear documentation at every stage.",
     visionTitle: "Vision",
     vision:
-      "To be the partner Bangladeshi organisations call first for software, supply and engineering — one accountable team from the first idea to everyday use.",
-    valuesTitle: "Our values",
+      "To be a dependable single-source partner for organisations in Bangladesh that need technology, equipment and site works delivered under one contract.",
+    valuesTitle: "How we operate",
     values: [
-      { title: "Honesty", description: "Realistic timelines, itemised quotes and no over-promising." },
-      { title: "Quality", description: "Clean code, genuine equipment and safe, tidy site work." },
-      { title: "Ownership", description: "If we built, supplied or installed it, we stand behind it." },
-      { title: "Growth", description: "We learn from every project and grow with our clients." },
+      { title: "Transparency", description: "Itemised quotations, written scope and agreed payment milestones before any work begins." },
+      { title: "Compliance", description: "Invoices, VAT documents, delivery challans and warranty records issued for every order." },
+      { title: "Quality control", description: "Code review and testing for software; inspection, testing and commissioning for equipment and installations." },
+      { title: "Accountability", description: "A named point of contact on every project, and after-sales support under agreed terms." },
     ],
     licenseTitle: "Licensed in Bangladesh",
     licenseText:
-      "We operate under a valid trade license issued in Bangladesh. License details appear on every quotation and invoice, and are available on request.",
+      "Offspring Technologies operates under a valid trade license issued in Bangladesh. The license number is printed on our quotations and invoices, and a copy is available on request for vendor registration and tender submissions.",
   },
   divisions,
   divisionPage: {
@@ -395,6 +399,15 @@ reach: {
       mapCta: "Open in Google Maps",
       visitNote: "Visits by appointment — call or WhatsApp before you come.",
     },
+  },
+  /** Floating WhatsApp button and its greeting bubble */
+  chat: {
+    label: "Chat with us",
+    name: "Offspring Technologies",
+    status: "Usually replies during office hours",
+    greeting: "Hi there 👋 Need a quote or have a question? Send us a message on WhatsApp.",
+    start: "Start chat",
+    close: "Close",
   },
   notFound: {
     code: "404",

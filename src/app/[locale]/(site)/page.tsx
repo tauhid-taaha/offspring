@@ -13,6 +13,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { findSlot } from "@/lib/images";
 import { Backdrop, SectionBg } from "@/components/Media";
 import clsx from "clsx";
+import { company, whatsappLink } from "@/config/company";
 import { HomeCardSection } from "@/components/HomeCardSection";
 import homeCards, { cardAreaIds } from "@/i18n/dictionaries/en-cards";
 import { getPublishedCards } from "@/lib/cards";
@@ -157,78 +158,131 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         );
       })}
 
-      {/* ───────── Where we work ───────── */}
+      {/* ───────── Where we work: interactive rows (no boxed cards) ───────── */}
       <section className="relative isolate py-24 sm:py-32">
         <SectionBg slot="home/bg-reach" />
         <Container>
-          <Reveal>
-            <SectionHeading eyebrow={t.reach.eyebrow} title={t.reach.title} align="center" />
-          </Reveal>
-          <div className="mt-14 grid gap-5 lg:grid-cols-3">
-            {t.reach.items.map((c, i) => {
-              // three tones: navy · mint · white
-              const tone = (["dark", "mint", "white"] as const)[i % 3];
-              const dark = tone === "dark";
-              return (
-                <Reveal key={c.id} delay={i * 100}>
-                  <div
-                    className={clsx(
-                      "relative isolate flex h-full flex-col overflow-hidden rounded-[28px] p-8 sm:p-10",
-                      tone === "dark" && "bg-navy text-white",
-                      tone === "mint" && "bg-signal-soft text-fg",
-                      tone === "white" && "bg-canvas text-fg ring-1 ring-line",
-                    )}
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <Reveal>
+              <SectionHeading eyebrow={t.reach.eyebrow} title={t.reach.title} />
+            </Reveal>
+            {/* Coverage legend */}
+            <Reveal delay={100}>
+              <ul className="flex flex-wrap gap-2.5 lg:justify-end">
+                {[...new Map(t.reach.items.map((c, i) => [c.tag, i === 0 ? "globe" : "pin"])).entries()].map(([tag, icon]) => (
+                  <li
+                    key={tag}
+                    className="inline-flex items-center gap-2 rounded-full bg-canvas px-4 py-2 text-[14px] font-medium ring-1 ring-line"
                   >
-                    <SectionBg slot={`home/card-${c.id}`} tone={dark ? "dark" : "light"} ambient={false} />
-                    <Icon
-                      name={c.icon}
-                      className={clsx("absolute -right-8 -top-8 h-48 w-48", dark ? "text-white/[0.06]" : "text-signal/[0.07]")}
-                    />
-                    <div className="relative">
-                      <span
-                        className={clsx(
-                          "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold",
-                          dark ? "bg-white/10 text-white" : tone === "mint" ? "bg-canvas text-signal" : "bg-signal-soft text-signal",
-                        )}
-                      >
-                        <Icon name={i === 0 ? "globe" : "pin"} className="h-3.5 w-3.5" />
-                        {c.tag}
-                      </span>
-                    </div>
-                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] sm:text-[28px]">{c.title}</h3>
-                    <p className={clsx("relative mt-4 leading-relaxed", dark ? "text-white/70" : "text-fg-muted")}>{c.text}</p>
-                    <ul className="relative mt-auto space-y-3 pt-8">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inset-0 animate-ping rounded-full bg-pulse/60 [animation-duration:2.4s]" />
+                      <span className="relative h-2 w-2 rounded-full bg-pulse" />
+                    </span>
+                    <Icon name={icon} className="h-4 w-4 text-signal" />
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+
+          <ol className="mt-14 border-t border-line">
+            {t.reach.items.map((c, i) => (
+              <Reveal as="li" key={c.id} delay={i * 90} className="border-b border-line">
+                <Link
+                  href={href(locale, `/solutions/${divisionFor[c.id as keyof typeof divisionFor]}`)}
+                  className="group relative isolate grid gap-x-10 gap-y-5 py-9 pr-14 sm:py-11 lg:pr-0 lg:grid-cols-[88px_minmax(0,1.05fr)_minmax(0,1.35fr)_56px] lg:items-center"
+                >
+                  {/* Hover fill that sweeps in from the left */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-y-0 -left-4 -right-4 -z-10 origin-left scale-x-0 rounded-2xl bg-[linear-gradient(90deg,rgb(227_244_236/0.9),rgb(227_244_236/0.35))] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100 sm:-left-6 sm:-right-6"
+                  />
+
+                  {/* Index */}
+                  <span className="font-mono text-[44px] font-medium leading-none tracking-tight text-transparent transition-colors duration-500 [-webkit-text-stroke:1px_rgb(10_13_20/0.25)] group-hover:text-signal group-hover:[-webkit-text-stroke:1px_transparent] lg:text-[56px]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* Scope + title */}
+                  <div className="min-w-0">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-signal-soft px-3 py-1 text-[12px] font-semibold text-signal transition-colors duration-300 group-hover:bg-canvas">
+                      <Icon name={i === 0 ? "globe" : "pin"} className="h-3.5 w-3.5" />
+                      {c.tag}
+                    </span>
+                    <h3 className="mt-3 text-balance text-2xl font-semibold tracking-[-0.03em] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1.5 sm:text-[30px] sm:leading-[1.1]">
+                      {c.title}
+                    </h3>
+                  </div>
+
+                  {/* Description + capabilities */}
+                  <div className="min-w-0">
+                    <p className="text-pretty leading-relaxed text-fg-muted">{c.text}</p>
+                    <ul className="mt-4 flex flex-wrap gap-1.5">
                       {c.points.map((pt) => (
-                        <li key={pt} className="flex items-start gap-3 text-[15px]">
-                          <Icon name="check" className={clsx("mt-0.5 h-4 w-4 shrink-0", dark ? "text-accent" : "text-pulse")} />
+                        <li
+                          key={pt}
+                          className="rounded-full bg-surface px-3 py-1 text-[13px] text-fg/80 ring-1 ring-line transition-colors duration-300 group-hover:bg-canvas"
+                        >
                           {pt}
                         </li>
                       ))}
                     </ul>
-                    <Link
-                      href={href(locale, `/solutions/${divisionFor[c.id as keyof typeof divisionFor]}`)}
-                      className={clsx(
-                        "group relative mt-8 inline-flex w-fit items-center gap-2 text-[15px] font-semibold",
-                        dark ? "text-accent hover:text-white" : "text-signal hover:text-fg",
-                      )}
-                    >
-                      {t.nav.seeDetails}
-                      <Arrow />
-                    </Link>
                   </div>
-                </Reveal>
-              );
-            })}
-          </div>
+
+                  {/* Arrow button */}
+                  <span className="absolute right-0 top-9 flex h-12 w-12 items-center justify-center rounded-full border border-line-strong bg-canvas text-fg transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:border-accent group-hover:bg-accent group-hover:text-ink sm:top-11 lg:static lg:justify-self-end">
+                    <Arrow className="-rotate-45 transition-transform duration-500 group-hover:rotate-0" />
+                    <span className="sr-only">{t.nav.seeDetails}</span>
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </ol>
         </Container>
       </section>
 
       {/* ───────── FAQ ───────── */}
-      <section className="relative isolate py-24 sm:py-32">
+      <section id="faq" className="relative isolate scroll-mt-20 overflow-hidden py-24 sm:py-32">
         <SectionBg slot="home/bg-faq" />
-        <Container className="grid gap-12 lg:grid-cols-[1fr_1.8fr] lg:gap-20">
-          <Reveal>
-            <SectionHeading eyebrow={t.faq.eyebrow} title={t.faq.title} />
+        {/* soft colour field so the glass rows read */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -left-24 top-1/4 h-[420px] w-[420px] rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.16),transparent)]" />
+          <div className="absolute -right-24 bottom-0 h-[420px] w-[520px] rounded-full bg-[radial-gradient(closest-side,rgb(255_178_30/0.14),transparent)]" />
+        </div>
+        <Container className="grid items-start gap-12 lg:grid-cols-[1fr_1.7fr] lg:gap-16">
+          <Reveal className="lg:sticky lg:top-28">
+            <SectionHeading eyebrow={t.faq.eyebrow} title={t.faq.title} subtitle={t.faq.subtitle} />
+            {/* Still have a question? */}
+            <div className="glass-tile mt-10 rounded-3xl p-6">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[linear-gradient(145deg,#34d399,#047857)] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.45)]">
+                  <Icon name="chat" className="h-5 w-5" />
+                </span>
+                <p className="text-[17px] font-semibold tracking-[-0.01em]">{t.faq.helpTitle}</p>
+              </div>
+              <p className="mt-3 text-[15px] leading-relaxed text-fg-muted">{t.faq.helpText}</p>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {company.whatsapp && (
+                  <a
+                    href={whatsappLink(t.contact.details.whatsappMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-11 items-center gap-2 rounded-full bg-[#25D366] px-5 text-[14px] font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
+                  >
+                    <Icon name="whatsapp" className="h-4 w-4" />
+                    WhatsApp
+                  </a>
+                )}
+                <a
+                  href={`tel:${company.phone}`}
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-[14px] font-semibold ring-1 ring-black/[0.08] transition-colors hover:text-signal hover:ring-signal/40"
+                >
+                  <Icon name="call" className="h-4 w-4" />
+                  {t.contact.details.phone}
+                </a>
+              </div>
+            </div>
           </Reveal>
           <Reveal delay={100}>
             <Faq items={t.faq.items} />
@@ -237,7 +291,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* ───────── Get a quote (same form as the Contact page) ───────── */}
-      <section id="quote" className="relative isolate scroll-mt-20 border-t border-line bg-surface py-24 sm:py-32">
+      <section id="quote" className="relative isolate scroll-mt-20 overflow-hidden border-t border-line bg-surface py-24 sm:py-32">
         <SectionBg slot="home/bg-quote" />
         <Container>
           <Reveal>

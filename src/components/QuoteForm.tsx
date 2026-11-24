@@ -17,6 +17,13 @@ type Row = QuoteProduct & { key: number };
 
 const spring = { type: "spring", stiffness: 420, damping: 32 } as const;
 
+/** Icon squircle colours per category (Apple app-icon style gradients). */
+const tileTone: Record<string, string> = {
+  software: "bg-[linear-gradient(145deg,#34d399,#047857)]",
+  supply: "bg-[linear-gradient(145deg,#fcd34d,#f59e0b)]",
+  install: "bg-[linear-gradient(145deg,#38bdf8,#02283a)]",
+};
+
 /**
  * Category-first quote form: pick Software / Supply / Install, then pick or add
  * items, then fill the details for that category, then contact details.
@@ -134,6 +141,12 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
   }
 
   return (
+    <div className="relative isolate">
+      <div aria-hidden="true" className="pointer-events-none absolute -inset-10 -z-10 overflow-hidden sm:-inset-16">
+        <div className="absolute left-0 top-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgb(31_168_90/0.32),transparent)]" />
+        <div className="absolute right-0 top-1/4 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgb(56_189_248/0.22),transparent)]" />
+        <div className="absolute bottom-0 left-1/3 h-80 w-96 rounded-full bg-[radial-gradient(closest-side,rgb(255_178_30/0.26),transparent)]" />
+      </div>
     <AnimatePresence mode="wait" initial={false}>
       {status === "sent" ? (
         <m.div
@@ -141,7 +154,7 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease }}
-          className="card-surface flex min-h-[420px] flex-col items-start justify-center rounded-3xl p-8 sm:p-10"
+          className="glass-panel flex min-h-[420px] flex-col items-start justify-center rounded-[32px] p-8 sm:p-10"
           role="status"
         >
           <m.span
@@ -183,7 +196,7 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
           exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.25 } }}
           onSubmit={onSubmit}
           noValidate
-          className="card-surface grid gap-8 rounded-3xl p-5 sm:p-7"
+          className="glass-panel grid gap-8 rounded-[32px] p-5 sm:p-7"
         >
           {/* 1 · Category */}
           <Step n={1} title={q.step1} done={Boolean(current)}>
@@ -201,36 +214,49 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
                     whileTap={{ scale: 0.97 }}
                     transition={spring}
                     className={clsx(
-                      "relative isolate grid grid-cols-[auto_1fr] items-center gap-x-3 rounded-2xl border p-3 text-left transition-[border-color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-signal sm:flex sm:flex-col sm:items-start sm:p-4",
+                      "glass-tile relative isolate grid grid-cols-[auto_1fr] items-center gap-x-3.5 rounded-[22px] p-3.5 text-left transition-shadow duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal sm:flex sm:flex-col sm:items-start sm:p-5",
                       on
-                        ? "border-signal shadow-[0_18px_40px_-22px_rgb(0_119_95/0.55)]"
-                        : "border-line-strong bg-canvas hover:border-fg/25 hover:shadow-[0_14px_30px_-20px_rgb(10_13_20/0.35)]",
+                        ? "shadow-[inset_0_1px_0_white,0_0_0_2px_rgb(0_119_95/0.85),0_22px_44px_-20px_rgb(0_119_95/0.55)]"
+                        : "hover:shadow-[inset_0_1px_0_white,0_0_0_1px_rgb(10_13_20/0.06),0_22px_40px_-22px_rgb(2_40_58/0.45)]",
                     )}
                   >
-                    {/* Highlight that slides from card to card */}
+                    {/* Brighter surface that slides from tile to tile */}
                     {on && (
                       <m.span
                         layoutId={`${uid}-cat`}
-                        className="absolute inset-0 -z-10 rounded-2xl bg-signal-soft"
+                        className="absolute inset-0 -z-10 rounded-[22px] bg-white/90"
                         transition={spring}
                       />
                     )}
+                    {/* Selected tick */}
+                    <AnimatePresence>
+                      {on && (
+                        <m.span
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 26 }}
+                          className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-signal text-white shadow-[0_4px_10px_-2px_rgb(0_119_95/0.6)]"
+                        >
+                          <Icon name="check" className="h-3.5 w-3.5" />
+                        </m.span>
+                      )}
+                    </AnimatePresence>
+                    {/* App-icon style squircle */}
                     <span
                       className={clsx(
-                        "row-span-2 flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-300 sm:row-span-1",
-                        on ? "bg-signal text-white" : "bg-surface text-signal",
+                        "row-span-2 flex h-11 w-11 items-center justify-center rounded-[13px] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.45),0_6px_14px_-6px_rgb(2_40_58/0.5)] sm:row-span-1 sm:h-12 sm:w-12 sm:rounded-[14px]",
+                        tileTone[c.id],
                       )}
                     >
-                      <Icon name={c.icon} className="h-5 w-5" />
+                      <Icon name={c.icon} className="h-5 w-5 sm:h-[22px] sm:w-[22px]" />
                     </span>
-                    <span className="text-[15px] font-semibold leading-snug tracking-tight sm:mt-3">
+                    <span className="pr-7 text-[15px] font-semibold leading-snug tracking-[-0.01em] sm:mt-4 sm:pr-0 sm:text-[16px]">
                       {c.title}
-                      <span className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.14em] text-fg-subtle sm:hidden">
-                        {c.coverage}
-                      </span>
                     </span>
                     <span className="text-[13px] leading-snug text-fg-muted sm:mt-1">{c.text}</span>
-                    <span className="mt-3 hidden rounded-full bg-canvas px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle ring-1 ring-line sm:inline">
+                    <span className="col-start-2 mt-2 inline-flex w-fit items-center gap-1.5 rounded-full bg-white/80 px-2.5 py-1 text-[12px] font-medium text-fg/70 ring-1 ring-black/[0.06] sm:mt-4">
+                      <span className={clsx("h-1.5 w-1.5 rounded-full", c.id === "software" ? "bg-[#38bdf8]" : "bg-pulse")} />
                       {c.coverage}
                     </span>
                   </m.button>
@@ -569,6 +595,7 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
         </m.form>
       )}
     </AnimatePresence>
+    </div>
   );
 }
 
@@ -608,7 +635,7 @@ function Step({ n, title, hint, done, children }: { n: number; title: string; hi
 }
 
 const inputClass =
-  "w-full rounded-xl border border-line-strong bg-canvas px-4 text-[15px] text-fg placeholder:text-fg-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-signal focus:bg-canvas focus:shadow-[0_0_0_4px_rgb(0_119_95/0.12)]";
+  "w-full rounded-xl border border-black/[0.08] bg-white/75 px-4 text-[15px] text-fg placeholder:text-fg-subtle outline-none shadow-[inset_0_1px_2px_rgb(10_13_20/0.04)] transition-[border-color,box-shadow,background-color] duration-200 focus:border-signal focus:bg-white focus:shadow-[0_0_0_4px_rgb(0_119_95/0.14)]";
 
 function Label({ text, required }: { text: string; required?: boolean }) {
   return (
