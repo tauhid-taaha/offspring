@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import clsx from "clsx";
 import { Arrow, ButtonLink, Container, Eyebrow, Icon, SectionHeading } from "@/components/ui";
-import { Backdrop, ImageSlot, SectionBg } from "@/components/Media";
+import { Backdrop, SectionBg } from "@/components/Media";
+import { ServiceCardView } from "@/components/ServiceCardView";
+import { getPublishedCards } from "@/lib/cards";
 import { HeroPanel } from "@/components/HeroSlider";
 import { RouteMap } from "@/components/RouteMap";
 import { Reveal } from "@/components/Reveal";
@@ -47,6 +49,7 @@ export default async function DivisionPage({ params }: Props) {
   const bannerImg = findImage(imgDir, "banner");
   const onPhoto = Boolean(heroImg);
   const isCatalog = d.offer.layout === "catalog";
+  const areaCards = (await getPublishedCards())[quoteType[division]];
   const others = divisionIds.filter((id) => id !== division).map((id) => t.divisions[id]);
   const slide = t.heroSlides.items.find((item) => item.division === division);
   const panel = slide
@@ -77,7 +80,7 @@ export default async function DivisionPage({ params }: Props) {
           <div>
           <nav aria-label="Breadcrumb" className="fade-up">
             <Link
-              href={href(locale, "/solutions")}
+              href={`${href(locale)}#solutions`}
               className={clsx(
                 "inline-flex items-center gap-1.5 text-[13px] transition-colors",
                 onPhoto ? "text-white/70 hover:text-white" : "text-fg-muted hover:text-fg",
@@ -171,66 +174,27 @@ export default async function DivisionPage({ params }: Props) {
             <SectionHeading eyebrow={d.offer.eyebrow} title={d.offer.title} subtitle={d.offer.subtitle} />
           </Reveal>
 
-          {isCatalog ? (
-            <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {d.offer.items.map((item, i) => (
-                <Reveal key={item.id} delay={(i % 4) * 70}>
-                  <article id={item.id} className="card-surface group flex h-full scroll-mt-24 flex-col overflow-hidden rounded-3xl">
-                    <ImageSlot
-                      src={findImage(imgDir, item.id)}
-                      alt={item.title}
-                      icon={item.icon}
-                      className="aspect-[4/3]"
-                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    />
-                    <div className="flex flex-1 flex-col p-6">
-                      <h3 className="text-lg font-semibold tracking-tight">{item.title}</h3>
-                      <p className="mt-2 text-[14px] leading-relaxed text-fg-muted">{item.description}</p>
-                      <ul className="mt-5 flex flex-wrap gap-1.5">
-                        {item.points.map((pt) => (
-                          <li key={pt} className="rounded-full bg-surface px-2.5 py-1 text-[12px] text-fg/80">
-                            {pt}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
-              {/* Source-to-spec card */}
-              <Reveal delay={0} className="sm:col-span-2 lg:col-span-4">
-                <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-dashed border-line-strong bg-surface p-8 sm:flex-row sm:items-center">
-                  <div>
-                    <h3 className="text-xl font-semibold tracking-tight">{ui.sourceToSpec}</h3>
-                    <p className="mt-1.5 text-fg-muted">{d.offer.subtitle}</p>
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {areaCards.map((c, i) => {
+              const anchor = c.link?.includes("#") ? c.link.split("#")[1] : c.id;
+              return (
+                <Reveal key={c.id} delay={(i % 4) * 70}>
+                  <div id={anchor} className="h-full scroll-mt-24">
+                    <ServiceCardView card={c} />
                   </div>
-                  <ButtonLink href={`${href(locale, "/contact")}?type=${quoteType[division]}`}>{ui.quoteCta}</ButtonLink>
-                </div>
-              </Reveal>
-            </div>
-          ) : (
-            <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {d.offer.items.map((item, i) => (
-                <Reveal key={item.id} delay={(i % 3) * 80}>
-                  <article id={item.id} className="card-surface group flex h-full scroll-mt-24 flex-col overflow-hidden rounded-3xl">
-                    <ImageSlot src={findImage(imgDir, item.id)} alt={item.title} icon={item.icon} className="aspect-[16/9]" />
-                    <div className="flex flex-1 flex-col p-7">
-                      <h3 className="text-xl font-semibold tracking-tight">{item.title}</h3>
-                      <p className="mt-2.5 leading-relaxed text-fg-muted">{item.description}</p>
-                      <ul className="mt-6 space-y-2.5 border-t border-line pt-5">
-                        {item.points.map((pt) => (
-                          <li key={pt} className="flex items-center gap-2.5 text-[14px] text-fg/85">
-                            <Icon name="check" className="h-4 w-4 shrink-0 text-pulse" />
-                            {pt}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </article>
                 </Reveal>
-              ))}
+              );
+            })}
+          </div>
+          <Reveal className="mt-5">
+            <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-dashed border-line-strong bg-surface p-8 sm:flex-row sm:items-center">
+              <div>
+                <h3 className="text-xl font-semibold tracking-tight">{ui.sourceToSpec}</h3>
+                <p className="mt-1.5 text-fg-muted">{d.offer.subtitle}</p>
+              </div>
+              <ButtonLink href={`${href(locale, "/contact")}?type=${quoteType[division]}`}>{ui.quoteCta}</ButtonLink>
             </div>
-          )}
+          </Reveal>
         </Container>
       </section>
 

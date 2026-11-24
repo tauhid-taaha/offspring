@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, m, useMotionValueEvent, useScroll } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, m } from "motion/react";
 import clsx from "clsx";
 import { Logo } from "./Logo";
 import { Arrow, Icon } from "./ui";
@@ -16,7 +16,7 @@ const item = {
 };
 
 export type MenuItem = { id: string; title: string; description: string; icon: string };
-type NavLink = { label: string; to: string; children?: (MenuItem & { to: string })[] };
+type NavLink = { label: string; to?: string; match?: string; children?: (MenuItem & { to: string })[] };
 
 export function Header({
   locale,
@@ -32,17 +32,6 @@ export function Header({
   /** Which desktop dropdown is open (by link path). */
   const [menu, setMenu] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastY = useRef(0);
-  const { scrollY } = useScroll();
-
-  // Glass background once the page moves; tuck the bar away while scrolling down, bring it back on scroll up.
-  useMotionValueEvent(scrollY, "change", (y) => {
-    setScrolled(y > 12);
-    setHidden(y > 240 && y > lastY.current && !open && !menu);
-    lastY.current = y;
-  });
 
   useEffect(() => {
     setOpen(false);
@@ -56,47 +45,33 @@ export function Header({
   const links: NavLink[] = [
     {
       label: nav.solutions,
-      to: href(locale, "/solutions"),
+      match: href(locale, "/solutions"),
       children: divisions.map((d) => ({ ...d, to: href(locale, `/solutions/${d.id}`) })),
     },
     { label: nav.about, to: href(locale, "/about") },
-    { label: nav.contact, to: href(locale, "/contact") },
   ];
 
   return (
-    <m.header
-      className="fixed inset-x-0 top-0 z-50"
-      animate={{ y: hidden ? "-100%" : "0%" }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div
-        className={clsx(
-          "border-b transition-[background-color,border-color,backdrop-filter] duration-300",
-          scrolled || open
-            ? "border-line/70 bg-canvas/85 backdrop-blur-md"
-            : "border-transparent bg-transparent",
-        )}
-      >
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="border-b border-transparent bg-transparent">
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-5 sm:px-8 md:h-[76px]">
         <Link href={href(locale)} aria-label="Offspring Technologies — home">
           <Logo />
         </Link>
 
+        <div className="flex items-center gap-1">
         <nav className="hidden items-center gap-1.5 md:flex" aria-label="Primary" onMouseLeave={() => setHovered(null)}>
           {links.map((l) => {
-            const active = l.children ? pathname.startsWith(l.to) : pathname === l.to;
-            const isOpen = menu === l.to;
-            const linkEl = (
-              <Link
-                href={l.to}
-                onMouseEnter={() => setHovered(l.to)}
-                onFocus={() => setHovered(l.to)}
-                className={clsx(
-                  "relative isolate inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[16px] font-medium tracking-[-0.01em] transition-colors",
-                  active ? "text-signal" : "text-fg/85 hover:text-fg",
-                )}
-              >
-                {hovered === l.to && (
+            const key = l.to ?? l.label;
+            const active = l.match ? pathname.startsWith(l.match) : pathname === l.to;
+            const isOpen = menu === key;
+            const itemClass = clsx(
+              "relative isolate inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[16px] font-medium tracking-[-0.01em] transition-colors",
+              active ? "text-signal" : "text-fg/85 hover:text-fg",
+            );
+            const chrome = (
+              <>
+                {hovered === key && (
                   <m.span
                     layoutId="nav-hover"
                     className="absolute inset-0 -z-10 rounded-full bg-fg/[0.06]"
@@ -116,17 +91,34 @@ export function Header({
                     <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" />
                   </svg>
                 )}
-              </Link>
+              </>
             );
-            if (!l.children) return <span key={l.to}>{linkEl}</span>;
+            const linkEl = l.to ? (
+              <Link href={l.to} onMouseEnter={() => setHovered(key)} onFocus={() => setHovered(key)} className={itemClass}>
+                {chrome}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                aria-expanded={isOpen}
+                aria-haspopup="true"
+                onMouseEnter={() => setHovered(key)}
+                onFocus={() => setHovered(key)}
+                onClick={() => setMenu(isOpen ? null : key)}
+                className={itemClass}
+              >
+                {chrome}
+              </button>
+            );
+            if (!l.children) return <span key={key}>{linkEl}</span>;
             // Hover / focus dropdown (Solutions)
             return (
               <div
-                key={l.to}
+                key={key}
                 className="relative"
-                onMouseEnter={() => setMenu(l.to)}
+                onMouseEnter={() => setMenu(key)}
                 onMouseLeave={() => setMenu(null)}
-                onFocus={() => setMenu(l.to)}
+                onFocus={() => setMenu(key)}
                 onBlur={(e) => {
                   if (!e.currentTarget.contains(e.relatedTarget as Node)) setMenu(null);
                 }}
@@ -165,13 +157,6 @@ export function Header({
                       </Link>
                           </m.div>
                         ))}
-                        <Link
-                          href={l.to}
-                          className="group/all mt-1 flex items-center justify-between rounded-xl border-t border-line px-3.5 pb-2 pt-3 text-[13px] font-semibold text-signal hover:text-fg"
-                        >
-                          {nav.viewAll} {l.label}
-                          <Arrow className="group-hover/all:translate-x-0.5" />
-                        </Link>
                       </div>
                     </m.div>
                   )}
@@ -181,10 +166,10 @@ export function Header({
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
           <Link
             href={href(locale, "/contact")}
-            className="group hidden h-11 items-center gap-2 rounded-full bg-accent px-5 text-[15px] font-semibold text-ink transition-all hover:bg-accent-strong hover:shadow-[0_8px_24px_-8px_rgb(245_158_11/0.8)] active:scale-[0.97] md:inline-flex"
+            aria-current={pathname === href(locale, "/contact") ? "page" : undefined}
+            className="group ml-2 hidden h-11 items-center gap-2 rounded-full bg-accent px-5 text-[15px] font-semibold text-ink transition-all hover:bg-accent-strong hover:shadow-[0_8px_24px_-8px_rgb(245_158_11/0.8)] active:scale-[0.97] md:inline-flex"
           >
             {nav.cta}
             <Arrow />
@@ -225,10 +210,14 @@ export function Header({
               variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } } }}
             >
               {links.map((l) => (
-                <m.div key={l.to} variants={item} className="border-b border-line py-4">
-                  <Link href={l.to} onClick={() => setOpen(false)} className="text-2xl font-medium tracking-tight text-fg">
-                    {l.label}
-                  </Link>
+                <m.div key={l.to ?? l.label} variants={item} className="border-b border-line py-4">
+                  {l.to ? (
+                    <Link href={l.to} onClick={() => setOpen(false)} className="text-2xl font-medium tracking-tight text-fg">
+                      {l.label}
+                    </Link>
+                  ) : (
+                    <p className="text-2xl font-medium tracking-tight text-fg">{l.label}</p>
+                  )}
                   {l.children && (
                     <div className="mt-3 grid gap-1">
                       {l.children.map((d) => (
@@ -259,6 +248,6 @@ export function Header({
           </m.div>
         )}
       </AnimatePresence>
-    </m.header>
+    </header>
   );
 }

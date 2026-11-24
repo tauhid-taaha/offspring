@@ -42,6 +42,9 @@ function cleanLink(v: string) {
 function refresh() {
   for (const locale of enabledLocales) {
     revalidatePath(`/${locale}`);
+    revalidatePath(`/${locale}/solutions/digital`);
+    revalidatePath(`/${locale}/solutions/equipment`);
+    revalidatePath(`/${locale}/solutions/engineering`);
     revalidatePath(`/${locale}/${DESK}/cards`);
   }
 }

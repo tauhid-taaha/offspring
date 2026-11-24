@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { AnimatePresence, m } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 import { submitQuote, type QuoteProduct } from "@/app/actions/quote";
+import { isValidEmail, isValidPhone } from "@/lib/contact-check";
 import { isQuoteCategory, type QuoteCategory, type QuoteCategoryId } from "@/lib/quote-catalog";
 import { ease } from "./motion/MotionProvider";
 import { Icon } from "./ui";
@@ -85,6 +86,11 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
     setProducts((list) => list.map((p) => (p.key === key ? { ...p, ...patch } : p)));
   }
 
+  function finishInvalid(message: string) {
+    setStatus("idle");
+    setProblem(message);
+  }
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!category) return;
@@ -101,6 +107,10 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
     setProblem("");
 
     const data = new FormData(form);
+    const email = String(data.get("email") ?? "");
+    const phone = String(data.get("phone") ?? "");
+    if (!isValidEmail(email)) return setProblem(t.emailInvalid);
+    if (!isValidPhone(phone)) return setProblem(t.phoneInvalid);
     setStatus("sending");
     const result = await submitQuote({
       category,
@@ -108,13 +118,19 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
       details: category === "supply" ? { ...details, products: filled } : details,
       contact: {
         name: String(data.get("name") ?? ""),
-        email: String(data.get("email") ?? ""),
+        email,
         company: String(data.get("company") ?? ""),
-        phone: String(data.get("phone") ?? ""),
+        phone,
         location: String(data.get("location") ?? ""),
       },
     });
-    setStatus(result.ok ? "sent" : "error");
+    if (result.ok) {
+      setStatus("sent");
+      return;
+    }
+    if (result.error === "email") return finishInvalid(t.emailInvalid);
+    if (result.error === "phone") return finishInvalid(t.phoneInvalid);
+    setStatus("error");
   }
 
   return (
@@ -338,16 +354,7 @@ export function QuoteForm({ t, q, catalog }: { t: FormText; q: QuoteText; catalo
                         transition={{ duration: 0.35, ease }}
                       >
                         {current.id === "software" && (
-                          <div className="grid gap-4 sm:grid-cols-2">
-                            <Select label={q.software.budget} options={q.software.budgetOptions} value={details.budget} onChange={set("budget")} />
-                            <Select label={q.software.timeline} options={q.software.timelineOptions} value={details.timeline} onChange={set("timeline")} />
-                            <div className="sm:col-span-2">
-                              <Text label={q.software.website} type="url" placeholder={q.software.websitePlaceholder} value={details.website} onChange={set("website")} />
-                            </div>
-                            <div className="sm:col-span-2">
-                              <Area label={q.software.message} placeholder={q.software.messagePlaceholder} value={details.message} onChange={set("message")} required />
-                            </div>
-                          </div>
+                          <Area label={q.software.message} placeholder={q.software.messagePlaceholder} value={details.message} onChange={set("message")} required />
                         )}
 
                         {current.id === "supply" && (

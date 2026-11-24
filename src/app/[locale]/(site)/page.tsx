@@ -86,7 +86,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <ButtonLink href={href(locale, "/contact")} className="h-12 px-6">
                 {t.hero.primary}
               </ButtonLink>
-              <ButtonLink href={href(locale, "/solutions")} variant={cover ? "onDarkSecondary" : "secondary"} className="h-12 px-6">
+              <ButtonLink href="#solutions" variant={cover ? "onDarkSecondary" : "secondary"} className="h-12 px-6">
                 {t.hero.secondary}
               </ButtonLink>
             </div>
@@ -127,7 +127,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </Container>
 
       {/* ───────── Divisions (tabbed) ───────── */}
-      <section className="relative isolate py-24 sm:py-32">
+      <section id="solutions" className="relative isolate scroll-mt-16 py-24 sm:py-32">
         <SectionBg slot="home/bg-divisions" />
         <Container>
           <Reveal>
@@ -146,9 +146,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <HomeCardSection
             key={area}
             locale={locale}
-            id={area === "software" ? "solutions" : area}
+            id={area}
             heading={sec}
-            cards={cards[area]}
+            cards={cards[area].slice(0, 4)}
             mainHref={`/solutions/${sec.division}`}
             viewDetails={t.divisionPage.viewDetails}
             seeDetails={t.nav.seeDetails}

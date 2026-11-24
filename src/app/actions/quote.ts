@@ -1,6 +1,7 @@
 "use server";
 
 import en from "@/i18n/dictionaries/en";
+import { isValidEmail, isValidPhone } from "@/lib/contact-check";
 import { getSupabase } from "@/lib/supabase";
 import { isQuoteCategory, type QuoteCategoryId } from "@/lib/quote-catalog";
 
@@ -68,8 +69,8 @@ function cleanDetails(category: QuoteCategoryId, d: Record<string, unknown>) {
   return out;
 }
 
-export async function submitQuote(payload: QuotePayload): Promise<{ ok: boolean }> {
-  if (!payload || !isQuoteCategory(payload.category)) return { ok: false };
+export async function submitQuote(payload: QuotePayload): Promise<{ ok: true } | { ok: false; error: "email" | "phone" | "send" }> {
+  if (!payload || !isQuoteCategory(payload.category)) return { ok: false, error: "send" };
   const category = payload.category;
 
   const c = payload.contact ?? {};
@@ -78,8 +79,9 @@ export async function submitQuote(payload: QuotePayload): Promise<{ ok: boolean 
   const company = str(c.company, 160);
   const phone = str(c.phone, 40);
   const location = str(c.location, 160);
-  if (!name || !email || !phone) return { ok: false };
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false };
+  if (!name || !email || !phone) return { ok: false, error: "send" };
+  if (!isValidEmail(email)) return { ok: false, error: "email" };
+  if (!isValidPhone(phone)) return { ok: false, error: "phone" };
 
   const items = Array.isArray(payload.items)
     ? [...new Set(payload.items.map((i) => str(i, 80)).filter(Boolean))].slice(0, 20)
@@ -89,13 +91,13 @@ export async function submitQuote(payload: QuotePayload): Promise<{ ok: boolean 
   const message = str(raw.message, 4000);
 
   if (category === "supply") {
-    if (!Array.isArray(details.products) || details.products.length === 0) return { ok: false };
+    if (!Array.isArray(details.products) || details.products.length === 0) return { ok: false, error: "send" };
   } else if (items.length === 0 || !message) {
-    return { ok: false };
+    return { ok: false, error: "send" };
   }
 
   const supabase = getSupabase();
-  if (!supabase) return { ok: false };
+  if (!supabase) return { ok: false, error: "send" };
 
   const { error } = await supabase.from("quote_requests").insert({
     name,
@@ -111,5 +113,5 @@ export async function submitQuote(payload: QuotePayload): Promise<{ ok: boolean 
     message,
   });
 
-  return { ok: !error };
+  return error ? { ok: false, error: "send" } : { ok: true };
 }
