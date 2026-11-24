@@ -3,9 +3,9 @@
  * Leave a value as "" to hide it (nothing fake is ever shown).
  */
 export const company = {
-  name: "Offspring Technologies",
+  name: "Offspring Solutions",
   /** As written on the trade license. */
-  legalName: "Offspring Technologies",
+  legalName: "Offspring Solutions",
   /** e.g. "TRAD/DNCC/012345/2025" — shown in the footer & About page when set. */
   tradeLicenseNo: "",
   /** e.g. "Dhaka North City Corporation" */

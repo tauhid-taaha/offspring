@@ -49,7 +49,7 @@ export function Logo({ className, compact = false, onDark = false }: { className
       {!compact && (
         <span className="flex flex-col leading-none">
           <span className="text-[15px] font-semibold tracking-[0.14em]">OFFSPRING</span>
-          <span className={clsx("mt-1 text-[9.5px] font-medium tracking-[0.34em]", onDark ? "text-white/60" : "text-fg-muted")}>TECHNOLOGIES</span>
+          <span className={clsx("mt-1 text-[9.5px] font-medium tracking-[0.5em]", onDark ? "text-white/60" : "text-fg-muted")}>SOLUTIONS</span>
         </span>
       )}
     </span>

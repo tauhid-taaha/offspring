@@ -16,16 +16,18 @@ const item = {
 };
 
 export type MenuItem = { id: string; title: string; description: string; icon: string };
-type NavLink = { label: string; to?: string; match?: string; children?: (MenuItem & { to: string })[] };
+type NavLink = { label: string; to?: string; match?: string; lgOnly?: boolean; children?: (MenuItem & { to: string })[] };
+/** A top-level brand menu (Offspring IT / Offspring Engineering) with its sub-pages. */
+export type BrandMenu = { label: string; to: string; children: (MenuItem & { to: string })[] };
 
 export function Header({
   locale,
   nav,
-  divisions,
+  menus,
 }: {
   locale: Locale;
   nav: Dictionary["nav"];
-  divisions: MenuItem[];
+  menus: BrandMenu[];
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -52,15 +54,12 @@ export function Header({
   }, []);
 
   const links: NavLink[] = [
-    {
-      label: nav.solutions,
-      match: href(locale, "/solutions"),
-      children: divisions.map((d) => ({ ...d, to: href(locale, `/solutions/${d.id}`) })),
-    },
-    { label: nav.about, to: href(locale, "/about") },
+    ...menus.map((m) => ({ label: m.label, to: m.to, match: m.to, children: m.children })),
+    // Below 1024px only the brand menus + quote button fit; these move to the phone menu/footer there.
+    { label: nav.about, to: href(locale, "/about"), lgOnly: true },
     // Jump to sections on the home page (works from any page)
-    { label: nav.faq, to: `${href(locale)}#faq` },
-    { label: nav.contact, to: `${href(locale)}#quote` },
+    { label: nav.faq, to: `${href(locale)}#faq`, lgOnly: true },
+    { label: nav.contact, to: `${href(locale)}#quote`, lgOnly: true },
   ];
 
   return (
@@ -74,7 +73,7 @@ export function Header({
         )}
       >
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-5 sm:px-8 md:h-[76px]">
-        <Link href={href(locale)} aria-label="Offspring Technologies — home">
+        <Link href={href(locale)} aria-label="Offspring Solutions — home">
           <Logo />
         </Link>
 
@@ -129,7 +128,7 @@ export function Header({
                 {chrome}
               </button>
             );
-            if (!l.children) return <span key={key}>{linkEl}</span>;
+            if (!l.children) return <span key={key} className={l.lgOnly ? "hidden lg:inline" : undefined}>{linkEl}</span>;
             // Hover / focus dropdown (Solutions)
             return (
               <div

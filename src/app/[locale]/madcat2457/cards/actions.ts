@@ -45,6 +45,8 @@ function refresh() {
     revalidatePath(`/${locale}/solutions/digital`);
     revalidatePath(`/${locale}/solutions/equipment`);
     revalidatePath(`/${locale}/solutions/engineering`);
+    revalidatePath(`/${locale}/it`);
+    revalidatePath(`/${locale}/engineering`);
     revalidatePath(`/${locale}/${DESK}/cards`);
   }
 }

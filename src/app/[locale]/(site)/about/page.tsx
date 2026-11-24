@@ -11,7 +11,13 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return { title: getDictionary(locale as Locale).nav.about };
+  const s = getDictionary(locale as Locale).seo;
+  return {
+    title: s.aboutTitle,
+    description: s.aboutDescription,
+    alternates: { canonical: `/${locale}/about` },
+    openGraph: { title: s.aboutTitle, description: s.aboutDescription, url: `/${locale}/about` },
+  };
 }
 
 export default async function AboutPage({ params }: Props) {

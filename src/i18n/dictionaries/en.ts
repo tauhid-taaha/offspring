@@ -8,12 +8,22 @@
  *  - Company facts (trade license no., WhatsApp) live in src/config/company.ts.
  */
 import divisions from "./en-divisions";
+import brands from "./en-brands";
 
 const en = {
   meta: {
-    title: "Offspring Technologies — Building solutions for a connected world",
+    title: "Offspring Solutions | IT and Engineering",
     description:
-      "Government-licensed technology company in Bangladesh. Software, websites and apps for clients worldwide —  Machinery supply and installation across Bangladesh.",
+      "Offspring Solutions (Offspring IT & Offspring Engineering) is a Government-licensed company in Dhaka, Bangladesh: software development, websites and mobile apps, IT products, engineering and machinery supply, installation and civil works.",
+  },
+  /** Titles and descriptions for search results, per page */
+  seo: {
+    aboutTitle: "About Us — Government-Licensed IT & Engineering Company in Dhaka",
+    aboutDescription:
+      "Offspring Solutions is a Government-licensed company in Uttara, Dhaka, delivering software development, IT products, machinery supply, installation and civil works across Bangladesh.",
+    contactTitle: "Contact & Free Quote",
+    contactDescription:
+      "Request a free quotation from Offspring Solutions for software, websites, IT products, machinery supply or installation. Call +880 1627-276727, WhatsApp or email offspringbd@gmail.com.",
   },
   nav: {
     solutions: "Solutions",
@@ -226,7 +236,7 @@ reach: {
     items: [
       {
         q: "Are you a registered company?",
-        a: "Yes. Offspring Technologies is a Government-licensed company in Bangladesh, operating under a valid trade license. We provide formal quotations, invoices and agreements for every project.",
+        a: "Yes. Offspring Solutions is a Government-licensed company in Bangladesh, operating under a valid trade license. We provide formal quotations, invoices and agreements for every project.",
       },
       {
         q: "Do you work with clients outside Bangladesh?",
@@ -254,7 +264,7 @@ reach: {
     eyebrow: "About us",
     title: "Software, supply and engineering services from Dhaka.",
     intro:
-      "Offspring Technologies is a trade-licensed company headquartered in Uttara, Dhaka. We work in three areas: software development for clients in Bangladesh and abroad; supply of IT products, machinery and heavy equipment; and installation, electrical and civil works across Bangladesh.",
+      "Offspring Solutions is a trade-licensed company headquartered in Uttara, Dhaka. We work in three areas: software development for clients in Bangladesh and abroad; supply of IT products, machinery and heavy equipment; and installation, electrical and civil works across Bangladesh.",
     missionTitle: "Mission",
     mission:
       "To deliver software, equipment and engineering services to the agreed specification, schedule and budget, with clear documentation at every stage.",
@@ -270,9 +280,10 @@ reach: {
     ],
     licenseTitle: "Licensed in Bangladesh",
     licenseText:
-      "Offspring Technologies operates under a valid trade license issued in Bangladesh. The license number is printed on our quotations and invoices, and a copy is available on request for vendor registration and tender submissions.",
+      "Offspring Solutions operates under a valid trade license issued in Bangladesh. The license number is printed on our quotations and invoices, and a copy is available on request for vendor registration and tender submissions.",
   },
   divisions,
+  brands,
   divisionPage: {
     offerCta: "See what we offer",
     quoteCta: "Request a quote",
@@ -393,7 +404,7 @@ reach: {
       hoursLabel: "Hours",
       hours: "Saturday – Thursday, 10:00 – 19:00 (GMT+6)",
       whatsapp: "Chat on WhatsApp",
-      whatsappMessage: "Hello Offspring Technologies, I'd like to discuss a project.",
+      whatsappMessage: "Hello Offspring Solutions, I'd like to discuss a project.",
       callCta: "Call now",
       emailCta: "Send an email",
       mapCta: "Open in Google Maps",
@@ -403,7 +414,7 @@ reach: {
   /** Floating WhatsApp button and its greeting bubble */
   chat: {
     label: "Chat with us",
-    name: "Offspring Technologies",
+    name: "Offspring Solutions",
     status: "Usually replies during office hours",
     greeting: "Hi there 👋 Need a quote or have a question? Send us a message on WhatsApp.",
     start: "Start chat",

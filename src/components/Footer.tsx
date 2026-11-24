@@ -87,8 +87,14 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </div>
 
           <FooterCol title={footer.solutions}>
+            <FooterLink to={href(locale, dict.brands.it.path)}>
+              {dict.brands.it.name}
+            </FooterLink>
+            <FooterLink to={href(locale, dict.brands.engineering.path)}>
+              {dict.brands.engineering.name}
+            </FooterLink>
             {pillars.map((p) => (
-              <FooterLink key={p.id} to={href(locale, `/solutions/${p.id}`)} icon={p.icon}>
+              <FooterLink key={p.id} to={href(locale, `/solutions/${p.id}`)}>
                 {p.title}
               </FooterLink>
             ))}
@@ -96,7 +102,6 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
           <FooterCol title={footer.company}>
             <FooterLink to={href(locale, "/about")}>{nav.about}</FooterLink>
-            <FooterLink to={href(locale, "/solutions")}>{nav.solutions}</FooterLink>
             <FooterLink to={href(locale, "/contact")}>{nav.contact}</FooterLink>
           </FooterCol>
 
@@ -172,17 +177,12 @@ function FooterCol({ title, children }: { title: string; children: ReactNode }) 
   );
 }
 
-/** Link that slides right and reveals an arrow on hover. */
-function FooterLink({ to, icon, children }: { to: string; icon?: string; children: ReactNode }) {
+/** Plain text link; a small arrow appears on hover. */
+function FooterLink({ to, children }: { to: string; children: ReactNode }) {
   return (
     <li>
-      <Link href={to} className="group inline-flex items-center gap-2.5 text-[15px] text-white/75 transition-colors hover:text-white">
-        {icon && (
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.07] text-accent ring-1 ring-white/10 transition-colors group-hover:bg-accent group-hover:text-ink">
-            <Icon name={icon} className="h-3.5 w-3.5" />
-          </span>
-        )}
-        <span className="transition-transform duration-300 group-hover:translate-x-0.5">{children}</span>
+      <Link href={to} className="group inline-flex items-center gap-1.5 text-[15px] text-white/70 transition-colors hover:text-white">
+        {children}
         <Arrow className="-translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
       </Link>
     </li>

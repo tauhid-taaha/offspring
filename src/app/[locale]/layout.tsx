@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { enabledLocales, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { brand, seoKeywords, siteUrl } from "@/config/site";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
@@ -28,17 +29,34 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!isLocale(locale)) return {};
   const t = getDictionary(locale).meta;
   return {
-    title: { default: t.title, template: "%s — Offspring Technologies" },
+    metadataBase: new URL(siteUrl),
+    // Home uses the full title; inner pages become "Page title | Offspring Solutions".
+    title: { default: t.title, template: `%s | ${brand}` },
     description: t.description,
-    // Favicon: src/app/icon.png and src/app/apple-icon.png (generated from public/images/logo/logo.png)
+    applicationName: brand,
+    keywords: seoKeywords,
+    authors: [{ name: brand, url: siteUrl }],
+    creator: brand,
+    publisher: brand,
+    category: "technology",
+    formatDetection: { telephone: true, email: true, address: true },
+    // Favicon: src/app/icon.png and src/app/apple-icon.png. Share image: [locale]/opengraph-image.tsx
     openGraph: {
       title: t.title,
       description: t.description,
       type: "website",
-      siteName: "Offspring Technologies",
-      images: [{ url: "/images/logo/logo-mark.png", width: 512, height: 512, alt: "Offspring Technologies" }],
+      siteName: brand,
+      locale: "en_BD",
+      url: `/${locale}`,
+    },
+    twitter: { card: "summary_large_image", title: t.title, description: t.description },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
     },
     alternates: {
+      canonical: `/${locale}`,
       languages: Object.fromEntries(enabledLocales.map((l) => [l, `/${l}`])),
     },
   };

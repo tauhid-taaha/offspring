@@ -9,6 +9,11 @@
 const divisions = {
   digital: {
     id: "digital",
+    seo: {
+      title: "Software Development, Websites & Mobile Apps in Bangladesh",
+      description:
+        "Custom software, ERP, school management systems, websites and mobile apps from Offspring IT, a Government-licensed software company in Dhaka serving clients worldwide.",
+    },
     icon: "code",
     label: "01",
     hero: {
@@ -130,6 +135,11 @@ const divisions = {
 
   equipment: {
     id: "equipment",
+    seo: {
+      title: "Machinery, IT Products & Equipment Supplier in Bangladesh",
+      description:
+        "Government-licensed supplier of IT products, networking, generators, solar, industrial and heavy machinery across Bangladesh, with itemised BDT quotations and installation.",
+    },
     icon: "box",
     label: "02",
     hero: {
@@ -234,6 +244,11 @@ const divisions = {
 
   engineering: {
     id: "engineering",
+    seo: {
+      title: "Installation, Electrical & Civil Works in Bangladesh",
+      description:
+        "Machine installation and commissioning, electrical and civil works, solar, networking, CCTV and technical consultancy by Offspring Engineering across Bangladesh.",
+    },
     icon: "bolt",
     label: "03",
     hero: {

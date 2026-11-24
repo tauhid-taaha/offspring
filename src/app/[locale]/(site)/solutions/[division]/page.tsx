@@ -32,7 +32,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, division } = await params;
   if (!isDivision(division)) return {};
   const d = getDictionary(locale as Locale).divisions[division];
-  return { title: d.hero.eyebrow, description: d.hero.subtitle };
+  const path = `/${locale}/solutions/${division}`;
+  return {
+    title: d.seo.title,
+    description: d.seo.description,
+    alternates: { canonical: path },
+    openGraph: { title: d.seo.title, description: d.seo.description, url: path },
+  };
 }
 
 export default async function DivisionPage({ params }: Props) {
