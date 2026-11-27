@@ -20,7 +20,8 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "6mb" },
   },
   async redirects() {
-    return [{ source: "/", destination: `/${defaultLocale}`, permanent: false }];
+    // Permanent (308): tells Google the home page lives at /en, so it indexes that address.
+    return [{ source: "/", destination: `/${defaultLocale}`, permanent: true }];
   },
 };
 
